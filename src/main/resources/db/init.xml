@@ -1,0 +1,41 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    
+    <changeSet id="init-communals-schema" author="ilongross">
+        <sql>
+            create schema if not exists communals;
+        </sql>
+    </changeSet>
+
+    <changeSet id="create-communals-address-id-seq" author="ilongross">
+        <createSequence sequenceName="address_id_seq" schemaName="communals"/>
+    </changeSet>
+    <changeSet id="create-communals-address-table" author="ilongross">
+        <createTable tableName="address" schemaName="communals">
+            <column name="id" type="integer" defaultValueSequenceNext="communals.address_id_seq">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="region" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="street" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="house" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="apartment" type="varchar"/>
+            <column name="square" type="double">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    
+</databaseChangeLog>
