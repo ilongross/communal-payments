@@ -11,7 +11,7 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "account", schema = "communals")
+@Table(name = "account", schema = "communal")
 public class AccountEntity {
 
     @Id

@@ -12,7 +12,7 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "address", schema = "communals")
+@Table(name = "address", schema = "communal")
 public class AddressEntity {
 
     @Id

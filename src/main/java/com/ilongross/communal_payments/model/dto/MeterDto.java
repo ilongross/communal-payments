@@ -4,14 +4,16 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Data
 @Builder
 public class MeterDto {
 
     private Integer id;
-    private Integer userId;
-    private String service;
+    private Integer accountID;
+    private Integer service;
     private BigDecimal value;
+    private LocalDate date;
 
 }

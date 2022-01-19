@@ -14,8 +14,7 @@ public class AccountDto {
     private String name;
     private String lastname;
     private String patronymic;
-    private BigDecimal square;
-    private AddressDto address;
+    private Integer address;
     private String email;
 
 }
