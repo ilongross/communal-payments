@@ -1,5 +1,6 @@
 package com.ilongross.communal_payments.model.entity;
 
+import liquibase.pro.packaged.I;
 import lombok.*;
 
 import javax.persistence.*;

@@ -7,8 +7,8 @@ spring:
   jpa:
     show-sql: true
   liquibase:
-    change-log: classpath:db/init.xml
-#    change-log: classpath:db/insert_values.xml
+#    change-log: classpath:db/init.xml
+    change-log: classpath:db/insert_values.xml
 
 tariffs:
   const:

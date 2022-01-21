@@ -2,14 +2,17 @@ package com.ilongross.communal_payments.model.mapper;
 
 import com.ilongross.communal_payments.model.dto.PaymentDto;
 import com.ilongross.communal_payments.model.dto.PaymentResultDto;
+import com.ilongross.communal_payments.model.entity.AccountDebtEntity;
 import com.ilongross.communal_payments.model.entity.PaymentEntity;
 import com.ilongross.communal_payments.repository.AccountRepository;
 import com.ilongross.communal_payments.repository.ServiceTypeRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Slf4j
 @Component
 public class PaymentMapper {
 
@@ -32,6 +35,7 @@ public class PaymentMapper {
 
     public PaymentEntity mapToEntity(PaymentDto dto) {
         var entity = new PaymentEntity();
+//        log.info("DTO: {}", dto);
         entity.setAccountId(accountRepository.getById(dto.getAccountId()));
         entity.setServiceId(serviceTypeRepository.getById(dto.getServiceId()));
         entity.setSum(new BigDecimal(dto.getSum().toString()));
@@ -46,7 +50,7 @@ public class PaymentMapper {
     public PaymentResultDto mapToResultDto(PaymentEntity entity) {
         var addressEntity = entity.getAccountId().getAddress();
         var addressString = String.format(
-                "%s, %s, %s, %s, %s, %.2f",
+                "регион %s, г.%s, ул.%s, д.:%s, кв.:%s, пл.(кв.м.):%.2f",
                 addressEntity.getRegion(),
                 addressEntity.getCity(),
                 addressEntity.getStreet(),
@@ -67,6 +71,5 @@ public class PaymentMapper {
                 .date(entity.getDate())
                 .build();
     }
-
 
 }

@@ -67,8 +67,7 @@
     <changeSet id="create-communal-service-type-table" author="ilongross">
         <createTable tableName="service_type" schemaName="communal">
             <column name="id" type="integer" defaultValueComputed="nextval('communal.service_type_id_seq')">
-<!--TODO добавить констрейнтс primary key                -->
-                <constraints nullable="false" unique="true"/>
+                <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
             <column name="service_name" type="varchar">
                 <constraints nullable="false" unique="true"/>
@@ -124,6 +123,19 @@
             </column>
         </createTable>
     </changeSet>
-    
-    
+
+    <changeSet id="create-communal-account-debt-id-seq" author="ilongross">
+        <createSequence sequenceName="account_debt_id_seq" schemaName="communal"/>
+    </changeSet>
+    <changeSet id="create-communal-account-debt-table" author="ilongross">
+        <createTable tableName="account_debt" schemaName="communal">
+            <column name="account_id" type="integer" defaultValueComputed="nextval('communal.account_debt_id_seq')">
+                <constraints primaryKey="true" unique="true" nullable="false"/>
+            </column>
+            <column name="debt" type="double" defaultValue="0.00">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>

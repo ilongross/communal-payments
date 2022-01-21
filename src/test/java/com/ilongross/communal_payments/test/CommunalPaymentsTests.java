@@ -2,11 +2,7 @@ package com.ilongross.communal_payments.test;
 
 
 import com.ilongross.communal_payments.CommunalPaymentsApplication;
-import com.ilongross.communal_payments.model.dto.AccountDto;
-import com.ilongross.communal_payments.model.dto.AddressDto;
-import com.ilongross.communal_payments.model.dto.MeterDto;
-import com.ilongross.communal_payments.model.dto.ServiceTypeDto;
-import com.ilongross.communal_payments.model.entity.AccountEntity;
+import com.ilongross.communal_payments.model.dto.*;
 import com.ilongross.communal_payments.model.entity.AddressEntity;
 import com.ilongross.communal_payments.model.mapper.AccountMapper;
 import com.ilongross.communal_payments.model.mapper.AccountMapperCustom;
@@ -14,7 +10,8 @@ import com.ilongross.communal_payments.model.mapper.ServiceTypeMapper;
 import com.ilongross.communal_payments.repository.AccountRepository;
 import com.ilongross.communal_payments.repository.AddressRepository;
 import com.ilongross.communal_payments.repository.ServiceTypeRepository;
-import com.ilongross.communal_payments.service.ServiceTypeServiceImpl;
+import com.ilongross.communal_payments.service.PaymentService;
+import com.ilongross.communal_payments.service.ServiceTypeService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +37,9 @@ public class CommunalPaymentsTests {
     @Autowired
     private ServiceTypeMapper serviceTypeMapper;
     @Autowired
-    private ServiceTypeServiceImpl serviceTypeService;
+    private ServiceTypeService serviceTypeService;
+    @Autowired
+    private PaymentService paymentService;
 
     @Test
     void contextLoads() {
@@ -65,8 +64,8 @@ public class CommunalPaymentsTests {
                 .build();
         var meter = MeterDto.builder()
                 .id(1)
-                .accountID(account.getId())
-                .service(1)
+                .accountId(account.getId())
+                .serviceId(1)
                 .value(new BigDecimal("100.2")).build();
         log.info("Address: {}", address);
         log.info("Meter: {}", meter);
@@ -74,23 +73,23 @@ public class CommunalPaymentsTests {
 
     @Test
     void insertEntities() {
-//        var addressEntity = new AddressEntity();
-//        addressEntity.setId(1);
-//        addressEntity.setRegion("Irkutskaya");
-//        addressEntity.setCity("Irkutsk");
-//        addressEntity.setStreet("Universitetsky");
-//        addressEntity.setHouse("10");
-//        addressEntity.setSquare(new BigDecimal("46.3"));
-//        addressRepository.save(addressEntity);
+        var addressEntity = new AddressEntity();
+        addressEntity.setRegion("Иркутская область");
+        addressEntity.setCity("Иркутск");
+        addressEntity.setStreet("Университетский");
+        addressEntity.setHouse("10");
+        addressEntity.setApartment("10");
+        addressEntity.setSquare(new BigDecimal("46.3"));
+        addressRepository.save(addressEntity);
 
-        var accountEntity = new AccountEntity();
-        accountEntity.setId(2);
-        accountEntity.setName("Yakovleva");
-        accountEntity.setLastname("Ekaterina");
-        accountEntity.setPatronymic("Aleksandrovna");
-        accountEntity.setAddress(addressRepository.getById(4));
-        accountEntity.setEmail("kisskat@yandex.ru");
-        accountRepository.save(accountEntity);
+//        var accountEntity = new AccountEntity();
+//        accountEntity.setId(2);
+//        accountEntity.setName("Yakovleva");
+//        accountEntity.setLastname("Ekaterina");
+//        accountEntity.setPatronymic("Aleksandrovna");
+//        accountEntity.setAddress(addressRepository.getById(4));
+//        accountEntity.setEmail("kisskat@yandex.ru");
+//        accountRepository.save(accountEntity);
     }
 
 
@@ -104,9 +103,6 @@ public class CommunalPaymentsTests {
         dtos.forEach(System.out::println);
 
         System.out.println("Entities:");
-        var entities = dtos.stream()
-                .map(accountMapperCustom::mapToEntity).collect(Collectors.toList());
-        entities.forEach(System.out::println);
 
         System.out.println("------------------------------\n--- ServiceType ---");
         var serviceTypeDtos = serviceTypeRepository.findAll().stream()
@@ -124,7 +120,13 @@ public class CommunalPaymentsTests {
 
     @Test
     void testPaymentMapping() {
-//        var paymentDto =
+        var paymentDto = PaymentDto.builder()
+                .id(1)
+                .accountId(1)
+                .serviceId(3)
+                .sum(new BigDecimal("1000.02")).build();
+        var result = paymentService.makePayment(paymentDto);
+        log.info("RESULT DTO: {}", result);
     }
 
 

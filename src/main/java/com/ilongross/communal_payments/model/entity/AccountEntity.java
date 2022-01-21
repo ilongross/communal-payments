@@ -28,7 +28,7 @@ public class AccountEntity {
     @Column(name = "patronymic")
     private String patronymic;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "address", referencedColumnName = "id", nullable = false)
     private AddressEntity address;
 

@@ -42,5 +42,4 @@ public class ServiceTypeController {
                 .body(serviceTypeService.updateServiceTariff(dto));
     }
 
-
 }
