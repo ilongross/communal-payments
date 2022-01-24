@@ -1,9 +1,9 @@
 package com.ilongross.communal_payments.model.entity;
 
-import com.ilongross.communal_payments.model.entity.id_classes.AccountDebtEntityId;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

@@ -2,9 +2,11 @@ package com.ilongross.communal_payments.model.mapper;
 
 import com.ilongross.communal_payments.model.dto.AccountDebtDto;
 import com.ilongross.communal_payments.model.dto.AccountDto;
+import com.ilongross.communal_payments.model.dto.AccountMeterDebtDto;
 import com.ilongross.communal_payments.model.dto.MeterDto;
 import com.ilongross.communal_payments.model.entity.AccountDebtEntity;
 import com.ilongross.communal_payments.model.entity.AccountEntity;
+import com.ilongross.communal_payments.model.entity.AccountMeterDebtEntity;
 import com.ilongross.communal_payments.model.entity.MeterEntity;
 import com.ilongross.communal_payments.repository.AccountRepository;
 import com.ilongross.communal_payments.repository.AddressRepository;
@@ -78,6 +80,19 @@ public class AccountMapperCustom {
                 .serviceId(entity.getServiceId().getId())
                 .value(entity.getValue())
                 .date(entity.getDate())
+                .build();
+    }
+
+    public AccountMeterDebtDto mapToDto(AccountMeterDebtEntity entity) {
+        return AccountMeterDebtDto.builder()
+                .id(entity.getId())
+                .houseMaintenance(entity.getHouseMaintenance())
+                .currentMaintenance(entity.getCurrentMaintenance())
+                .elevatorMaintenance(entity.getElevatorMaintenance())
+                .garbageRemove(entity.getGarbageRemove())
+                .electricity(entity.getElectricity())
+                .coldWater(entity.getColdWater())
+                .hotWater(entity.getHotWater())
                 .build();
     }
 

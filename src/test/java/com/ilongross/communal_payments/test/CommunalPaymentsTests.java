@@ -13,6 +13,7 @@ import com.ilongross.communal_payments.repository.ServiceTypeRepository;
 import com.ilongross.communal_payments.service.PaymentService;
 import com.ilongross.communal_payments.service.ServiceTypeService;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.query.Query;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -127,6 +128,27 @@ public class CommunalPaymentsTests {
                 .sum(new BigDecimal("1000.02")).build();
         var result = paymentService.makePayment(paymentDto);
         log.info("RESULT DTO: {}", result);
+    }
+
+    @Test
+    void hqlQueries() {
+//
+//        var session = HibernateSessionFactory.getSessionFactory().openSession();
+//        var tx = session.beginTransaction();
+//        var query = session.createQuery("update ContactEntity set firstName = :nameParam, lastName = :lastNameParam" +
+//                ", birthDate = :birthDateParam"+
+//                " where firstName = :nameCode");
+//        query.setParameter("nameCode", "Nick");
+//        query.setParameter("nameParam", "NickChangedName1");
+//        query.setParameter("lastNameParam", "LastNameChanged1" );
+//        query.setParameter("birthDateParam", new Date());
+//        int result = query.executeUpdate();
+//        tx.commit();
+//        session.close();
+//        String hql = "FROM User where name = :paramName";
+//        Query query = session.createQuery(hql);
+//        query.setParameter("paramName", "Alex");
+//        List<User> users = query.list();
     }
 
 

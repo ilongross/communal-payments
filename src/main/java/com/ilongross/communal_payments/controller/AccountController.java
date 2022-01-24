@@ -1,10 +1,8 @@
 package com.ilongross.communal_payments.controller;
 
 
-import com.ilongross.communal_payments.model.dto.AccountCreateDto;
-import com.ilongross.communal_payments.model.dto.AccountDebtDto;
-import com.ilongross.communal_payments.model.dto.AccountDto;
-import com.ilongross.communal_payments.model.dto.MeterDto;
+import com.ilongross.communal_payments.model.dto.*;
+import com.ilongross.communal_payments.model.entity.AccountMeterDebtEntity;
 import com.ilongross.communal_payments.service.AccountService;
 import com.sun.istack.NotNull;
 import lombok.extern.slf4j.Slf4j;
@@ -58,6 +56,34 @@ public class AccountController {
         return ResponseEntity
                 .ok()
                 .body(accountService.sendAccountMeter(dto));
+    }
+
+    @GetMapping("/calculate_all")
+    public ResponseEntity<AccountAllDebtDto> calculateAllDebt() {
+        return ResponseEntity
+                .ok()
+                .body(accountService.calculateAllDebt());
+    }
+
+    @GetMapping("/debt_info")
+    public ResponseEntity<AccountAllDebtDto> showDebtInfo() {
+        return ResponseEntity
+                .ok()
+                .body(accountService.showDebtInfo());
+    }
+
+    @GetMapping("/meter_debt/{id}")
+    public ResponseEntity<AccountMeterDebtDto> getAccountMeterDebt(@PathVariable Integer id) {
+        return ResponseEntity
+                .ok()
+                .body(accountService.getAccountMeterDebt(id));
+    }
+
+    @GetMapping("/debtors")
+    public ResponseEntity<List<AccountDebtDto>> getAllDebtors() {
+        return ResponseEntity
+                .ok()
+                .body(accountService.getAllDebtors());
     }
 
 

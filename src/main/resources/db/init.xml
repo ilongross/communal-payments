@@ -137,5 +137,37 @@
             </column>
         </createTable>
     </changeSet>
+    
+    <changeSet id="create-communal-account-meter-debt-id-seq" author="ilongross">
+        <createSequence sequenceName="account_meter_debt_id_seq" schemaName="communal"/>
+    </changeSet>
+    <changeSet id="create-communal-account-meter-debt-table" author="ilogross">
+        <createTable tableName="account_meter_debt" schemaName="communal">
+            <column name="id" type="integer" defaultValueComputed="nextval('communal.account_meter_debt_id_seq')">
+                <constraints primaryKey="true" unique="true" nullable="false"/>
+            </column>
+            <column name="house_maintenance" type="double" defaultValue="0.00">
+                <constraints nullable="false"/>
+            </column>
+            <column name="current_maintenance" type="double" defaultValue="0.00">
+                <constraints nullable="false"/>
+            </column>
+            <column name="elevator" type="double" defaultValue="0.00">
+                <constraints nullable="false"/>
+            </column>
+            <column name="garbage_remove" type="double" defaultValue="0.00">
+                <constraints nullable="false"/>
+            </column>
+            <column name="electricity" type="double" defaultValue="0.00">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cold_water" type="double" defaultValue="0.00">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hot_water" type="double" defaultValue="0.00">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 
 </databaseChangeLog>

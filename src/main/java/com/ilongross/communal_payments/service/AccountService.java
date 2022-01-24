@@ -1,10 +1,6 @@
 package com.ilongross.communal_payments.service;
 
-import com.ilongross.communal_payments.model.dto.AccountCreateDto;
-import com.ilongross.communal_payments.model.dto.AccountDebtDto;
-import com.ilongross.communal_payments.model.dto.AccountDto;
-import com.ilongross.communal_payments.model.dto.MeterDto;
-import com.ilongross.communal_payments.model.entity.AccountEntity;
+import com.ilongross.communal_payments.model.dto.*;
 
 import java.util.List;
 
@@ -15,4 +11,8 @@ public interface AccountService {
     AccountDebtDto getAccountDebtByAccountId(Integer accountId);
     AccountDto createNewAccount(AccountDto dto);
     MeterDto sendAccountMeter(MeterDto dto);
+    AccountAllDebtDto calculateAllDebt();
+    AccountAllDebtDto showDebtInfo();
+    List<AccountDebtDto> getAllDebtors();
+    AccountMeterDebtDto getAccountMeterDebt(Integer accountId);
 }
