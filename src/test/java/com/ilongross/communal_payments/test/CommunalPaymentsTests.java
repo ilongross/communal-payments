@@ -3,12 +3,14 @@ package com.ilongross.communal_payments.test;
 
 import com.ilongross.communal_payments.CommunalPaymentsApplication;
 import com.ilongross.communal_payments.model.dto.*;
+import com.ilongross.communal_payments.model.entity.AccountEntity;
 import com.ilongross.communal_payments.model.entity.AddressEntity;
 import com.ilongross.communal_payments.model.mapper.AccountMapper;
 import com.ilongross.communal_payments.model.mapper.AccountMapperCustom;
 import com.ilongross.communal_payments.model.mapper.ServiceTypeMapper;
 import com.ilongross.communal_payments.repository.AccountRepository;
 import com.ilongross.communal_payments.repository.AddressRepository;
+import com.ilongross.communal_payments.repository.MeterRepository;
 import com.ilongross.communal_payments.repository.ServiceTypeRepository;
 import com.ilongross.communal_payments.service.PaymentService;
 import com.ilongross.communal_payments.service.ServiceTypeService;
@@ -19,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 @SpringBootTest(classes = CommunalPaymentsApplication.class)
@@ -41,6 +44,8 @@ public class CommunalPaymentsTests {
     private ServiceTypeService serviceTypeService;
     @Autowired
     private PaymentService paymentService;
+    @Autowired
+    private MeterRepository meterRepository;
 
     @Test
     void contextLoads() {
@@ -151,6 +156,25 @@ public class CommunalPaymentsTests {
 //        List<User> users = query.list();
     }
 
+    @Test
+    void getAccountMeterByPeriod() {
+        var dateNow = LocalDateTime.now();
+        var datePeriod = DatePeriodDto.builder()
+                .startDate(dateNow.minusDays(4))
+                .endDate(dateNow)
+                .build();
+        log.info("START date: {}", datePeriod.getStartDate());
+        log.info("END date: {}", datePeriod.getEndDate());
+        var accountEntity = new AccountEntity();
+        accountEntity.setId(1);
+        var meterEntityList = meterRepository
+                .findByAccountId(accountEntity).stream()
+                .filter(e -> e.getDate().compareTo(datePeriod.getStartDate()) >= 0 &&
+                        e.getDate().compareTo(datePeriod.getEndDate()) <= 0)
+                .collect(Collectors.toList());
+        System.out.println(meterEntityList.size());
+        meterEntityList.forEach(e-> System.out.println(accountMapperCustom.mapToDto(e)));
+    }
 
 
 }

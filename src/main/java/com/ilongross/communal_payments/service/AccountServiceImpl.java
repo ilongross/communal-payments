@@ -1,12 +1,14 @@
 package com.ilongross.communal_payments.service;
 
+import com.ilongross.communal_payments.exception.AccountIdNotFoundException;
 import com.ilongross.communal_payments.exception.ServiceTypeException;
 import com.ilongross.communal_payments.model.dto.*;
 import com.ilongross.communal_payments.model.entity.AccountDebtEntity;
 import com.ilongross.communal_payments.model.entity.AccountMeterDebtEntity;
+import com.ilongross.communal_payments.model.entity.ServiceTypeEntity;
 import com.ilongross.communal_payments.model.mapper.AccountMapperCustom;
+import com.ilongross.communal_payments.model.mapper.PaymentMapper;
 import com.ilongross.communal_payments.repository.*;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,14 +30,18 @@ public class AccountServiceImpl implements AccountService {
     private final MeterRepository meterRepository;
     private final ServiceTypeRepository serviceTypeRepository;
     private final AccountMeterDebtRepository accountMeterDebtRepository;
+    private final PaymentRepository paymentRepository;
+    private final PaymentMapper paymentMapper;
 
-    public AccountServiceImpl(AccountRepository accountRepository, AccountMapperCustom accountMapperCustom, AccountDebtRepository accountDebtRepository, MeterRepository meterRepository, ServiceTypeRepository serviceTypeRepository, AccountMeterDebtRepository accountMeterDebtRepository) {
+    public AccountServiceImpl(AccountRepository accountRepository, AccountMapperCustom accountMapperCustom, AccountDebtRepository accountDebtRepository, MeterRepository meterRepository, ServiceTypeRepository serviceTypeRepository, AccountMeterDebtRepository accountMeterDebtRepository, PaymentRepository paymentRepository, PaymentMapper paymentMapper) {
         this.accountRepository = accountRepository;
         this.accountMapperCustom = accountMapperCustom;
         this.accountDebtRepository = accountDebtRepository;
         this.meterRepository = meterRepository;
         this.serviceTypeRepository = serviceTypeRepository;
         this.accountMeterDebtRepository = accountMeterDebtRepository;
+        this.paymentRepository = paymentRepository;
+        this.paymentMapper = paymentMapper;
     }
 
     @Override
@@ -48,7 +55,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountDto getAccountById(Integer accountId) {
         return accountMapperCustom
                 .mapToDto(accountRepository.findById(accountId)
-                        .orElseThrow(() -> new RuntimeException("Account not found.")));
+                        .orElseThrow(() -> new AccountIdNotFoundException(accountId)));
     }
 
     @Override
@@ -57,7 +64,7 @@ public class AccountServiceImpl implements AccountService {
                 .mapToDto(
                         accountDebtRepository
                                 .findById(accountId)
-                                .orElseThrow(() -> new RuntimeException("Account in debt table not found")));
+                                .orElseThrow(() -> new AccountIdNotFoundException(accountId)));
     }
 
     @Override
@@ -66,7 +73,6 @@ public class AccountServiceImpl implements AccountService {
         var entity = accountRepository
                 .save(accountMapperCustom.mapToEntity(dto));
         var accountDebtEntity = new AccountDebtEntity();
-//        accountDebtEntity.setAccountId(entity.getId());
         accountDebtEntity.setDebt(new BigDecimal("0.00"));
         accountDebtRepository.save(accountDebtEntity);
         var accountMeterDebtEntity = new AccountMeterDebtEntity();
@@ -85,23 +91,22 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public MeterDto sendAccountMeter(MeterDto dto) {
         if(dto.getServiceId() < 5 || dto.getServiceId() > 7) {
-            log.error("Wrong service type: {}",dto.getServiceId());
-            throw new ServiceTypeException("Wrong service type for payment", dto.getServiceId());
+            throw new ServiceTypeException(dto.getServiceId());
         }
 
         dto.setDate(LocalDateTime.now());
         var accountEntity = accountRepository
                 .findById(dto.getAccountId())
-                .orElseThrow(()-> new RuntimeException("Account not found."));
+                .orElseThrow(()-> new AccountIdNotFoundException(dto.getAccountId()));
         var serviceTariffValue = serviceTypeRepository
                 .findById(dto.getServiceId())
-                .orElseThrow(()-> new RuntimeException("Service type not found."));
+                .orElseThrow(()-> new ServiceTypeException(dto.getServiceId()));
         var accountDebtEntity = accountDebtRepository
                 .findById(dto.getAccountId())
-                .orElseThrow(()-> new RuntimeException("Account in debt table not found."));
+                .orElseThrow(()-> new AccountIdNotFoundException(dto.getAccountId()));
         var accountMeterDebtEntity = accountMeterDebtRepository
                 .findById(dto.getAccountId())
-                .orElseThrow(()-> new RuntimeException("Account in meter debt table not found."));
+                .orElseThrow(()-> new AccountIdNotFoundException(dto.getAccountId()));
 
         var result = new BigDecimal(serviceTariffValue.getTariff().toString());
 
@@ -154,14 +159,80 @@ public class AccountServiceImpl implements AccountService {
     public AccountMeterDebtDto getAccountMeterDebt(Integer accountId) {
         var accountDebtEntity = accountDebtRepository
                 .findById(accountId)
-                .orElseThrow(()-> new RuntimeException("Account in debt table not found."));
+                .orElseThrow(()-> new AccountIdNotFoundException(accountId));
         if(accountDebtEntity.getDebt().doubleValue() <= 0) {
             return AccountMeterDebtDto.builder().build();
         }
         var accountMeterDebtEntity = accountMeterDebtRepository
                 .findById(accountDebtEntity.getAccountId())
-                .orElseThrow(()-> new RuntimeException("Account in meter debt table not found."));
+                .orElseThrow(()-> new AccountIdNotFoundException(accountDebtEntity.getAccountId()));
         return accountMapperCustom.mapToDto(accountMeterDebtEntity);
+    }
+
+    @Override
+    public AccountReportDto getAccountReport(Integer accountId, DatePeriodDto periodDto) {
+
+        var accountEntity = accountRepository.findById(accountId)
+                .orElseThrow(()-> new AccountIdNotFoundException(accountId));
+        var accountMeterDtoByPeriodMap = meterRepository
+                .findByAccountId(accountEntity).stream()
+                .filter(e -> e.getDate().compareTo(periodDto.getStartDate()) >= 0 &&
+                        e.getDate().compareTo(periodDto.getEndDate()) <= 0)
+                .map(accountMapperCustom::mapToDto)
+                .collect(Collectors.groupingBy(MeterDto::getServiceId));
+        var accountPaymentDtoByPeriodMap = paymentRepository
+                .findByAccountId(accountEntity).stream()
+                .filter(e -> e.getDate().compareTo(periodDto.getStartDate()) >= 0 &&
+                        e.getDate().compareTo(periodDto.getEndDate()) <= 0)
+                .map(paymentMapper::mapToDto)
+                .collect(Collectors.groupingBy(PaymentDto::getServiceId));
+
+        var serviceIdSet = new HashSet<Integer>();
+        serviceIdSet.addAll(new ArrayList<>(accountMeterDtoByPeriodMap.keySet()));
+        serviceIdSet.addAll(new ArrayList<>(accountPaymentDtoByPeriodMap.keySet()));
+        log.info("SET: {}", serviceIdSet);
+
+        log.info("METER size: {}", accountMeterDtoByPeriodMap.size());
+        log.info("PAYMENT size: {}", accountPaymentDtoByPeriodMap.size());
+        var meterReportDtoList = new ArrayList<MeterReportDto>();
+
+        log.info("METER MAP: {}", accountMeterDtoByPeriodMap);
+        log.info("PAYMENT MAP: {}", accountPaymentDtoByPeriodMap);
+
+        for (var serviceId : serviceIdSet) {
+            var meterReportDto = MeterReportDto.builder().build();
+            var serviceEntity = serviceTypeRepository
+                    .findById(serviceId)
+                    .orElseThrow(()-> new ServiceTypeException(serviceId));
+            meterReportDto.setServiceName(serviceEntity.getServiceName());
+            meterReportDto.setAddedSum(new BigDecimal("0.00"));
+            meterReportDto.setPaidSum(new BigDecimal("0.00"));
+
+            var addedSumCurrent = meterReportDto.getAddedSum();
+            if(accountMeterDtoByPeriodMap.get(serviceId) != null) {
+                for (var meter : accountMeterDtoByPeriodMap.get(serviceId)) {
+                    addedSumCurrent = addedSumCurrent.add(meter.getValue().multiply(serviceEntity.getTariff()));
+                }
+            }
+            meterReportDto.setAddedSum(addedSumCurrent);
+            var paidSumCurrent = meterReportDto.getPaidSum();
+
+            if(accountPaymentDtoByPeriodMap.get(serviceId) != null) {
+                for (var payment : accountPaymentDtoByPeriodMap.get(serviceEntity.getId())) {
+                    paidSumCurrent = paidSumCurrent.add(payment.getSum());
+                }
+            }
+            meterReportDto.setPaidSum(paidSumCurrent);
+            meterReportDto.setCurrentDebt(getServiceDebtValue(accountId, serviceId));
+            meterReportDtoList.add(meterReportDto);
+        }
+
+        return AccountReportDto
+                .builder()
+                .accountId(accountId)
+                .period(periodDto)
+                .meterReportList(meterReportDtoList)
+                .build();
     }
 
 
@@ -186,32 +257,32 @@ public class AccountServiceImpl implements AccountService {
     private void calculateAccountMeterDebt(AccountMeterDebtEntity meterDebtEntity) {
         var square = accountRepository
                 .findById(meterDebtEntity.getId())
-                .orElseThrow(()-> new RuntimeException("Account not found"))
+                .orElseThrow(()-> new AccountIdNotFoundException(meterDebtEntity.getId()))
                 .getAddress()
                 .getSquare();
         meterDebtEntity.setHouseMaintenance(
                 meterDebtEntity.getHouseMaintenance()
                         .add(square
-                                .multiply(serviceTypeRepository.findById(1).orElseThrow(()-> new RuntimeException("Service type not found."))
+                                .multiply(serviceTypeRepository.findById(1).orElseThrow(()-> new ServiceTypeException(1))
                                         .getTariff())));
         meterDebtEntity.setCurrentMaintenance(
                 meterDebtEntity.getCurrentMaintenance()
                         .add(square
-                                .multiply(serviceTypeRepository.findById(2).orElseThrow(()-> new RuntimeException("Service type not found."))
+                                .multiply(serviceTypeRepository.findById(2).orElseThrow(()-> new ServiceTypeException(2))
                                         .getTariff())));
         meterDebtEntity.setElevatorMaintenance(
                 meterDebtEntity.getElevatorMaintenance()
                         .add(square
-                                .multiply(serviceTypeRepository.findById(3).orElseThrow(()-> new RuntimeException("Service type not found."))
+                                .multiply(serviceTypeRepository.findById(3).orElseThrow(()-> new ServiceTypeException(3))
                                         .getTariff())));
         meterDebtEntity.setGarbageRemove(
                 meterDebtEntity.getGarbageRemove()
                         .add(square
-                                .multiply(serviceTypeRepository.findById(4).orElseThrow(()-> new RuntimeException("Service type not found."))
+                                .multiply(serviceTypeRepository.findById(4).orElseThrow(()-> new ServiceTypeException(4))
                                         .getTariff())));
         var accountCurrentDebtEntity = accountDebtRepository
                 .findById(meterDebtEntity.getId())
-                .orElseThrow(()-> new RuntimeException("Account in debt table not found"));
+                .orElseThrow(()-> new AccountIdNotFoundException(meterDebtEntity.getId()));
         var newDebt = accountCurrentDebtEntity.getDebt();
         newDebt = newDebt.add(meterDebtEntity.getHouseMaintenance()
                         .add(meterDebtEntity.getCurrentMaintenance()
@@ -219,6 +290,23 @@ public class AccountServiceImpl implements AccountService {
                                         .add(meterDebtEntity.getGarbageRemove()))));
         accountCurrentDebtEntity.setDebt(newDebt);
         accountDebtRepository.save(accountCurrentDebtEntity);
+    }
+
+    private BigDecimal getServiceDebtValue(Integer accountId, Integer serviceId) {
+        var entity = accountMeterDebtRepository
+                .findById(accountId)
+                .orElseThrow(() -> new AccountIdNotFoundException(accountId));
+        var debtValue = new BigDecimal("0.00");
+        switch (serviceId) {
+            case 1 -> debtValue = entity.getHouseMaintenance();
+            case 2 -> debtValue = entity.getCurrentMaintenance();
+            case 3 -> debtValue = entity.getElevatorMaintenance();
+            case 4 -> debtValue = entity.getGarbageRemove();
+            case 5 -> debtValue = entity.getElectricity();
+            case 6 -> debtValue = entity.getColdWater();
+            case 7 -> debtValue = entity.getHotWater();
+        }
+        return debtValue;
     }
 
     private AccountMeterDebtEntity getAccountMeterDebtValue(AccountMeterDebtEntity entity, Integer serviceId, BigDecimal addedDebt) {

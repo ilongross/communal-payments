@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -84,6 +85,14 @@ public class AccountController {
         return ResponseEntity
                 .ok()
                 .body(accountService.getAllDebtors());
+    }
+
+    @GetMapping("/report/{id}")
+    public ResponseEntity<AccountReportDto> getAccountReportByPeriod(@PathVariable Integer id,
+                                                                     @RequestBody DatePeriodDto period) {
+        return ResponseEntity
+                .ok()
+                .body(accountService.getAccountReport(id, period));
     }
 
 

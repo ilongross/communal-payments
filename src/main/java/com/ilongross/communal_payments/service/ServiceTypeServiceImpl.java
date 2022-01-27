@@ -1,5 +1,6 @@
 package com.ilongross.communal_payments.service;
 
+import com.ilongross.communal_payments.exception.ServiceTypeException;
 import com.ilongross.communal_payments.model.dto.ServiceTypeDto;
 import com.ilongross.communal_payments.model.mapper.ServiceTypeMapper;
 import com.ilongross.communal_payments.repository.ServiceTypeRepository;
@@ -31,7 +32,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService{
     public ServiceTypeDto getServiceTypeById(Integer id) {
         return serviceTypeMapper.mapToDto(
                 serviceTypeRepository.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Service type not found.")));
+                        .orElseThrow(() -> new ServiceTypeException(id)));
     }
 
     @Override
@@ -46,7 +47,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService{
     public ServiceTypeDto updateServiceTariff(ServiceTypeDto dto) {
         var entity = serviceTypeRepository
                 .findById(dto.getId())
-                .orElseThrow(() -> new RuntimeException("Service type not found"));
+                .orElseThrow(() -> new ServiceTypeException(dto.getId()));
         entity.setTariff(dto.getTariff());
         entity = serviceTypeRepository.save(entity);
         return serviceTypeMapper.mapToDto(entity);

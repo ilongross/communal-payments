@@ -1,19 +1,16 @@
 package com.ilongross.communal_payments.exception;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ServiceTypeException extends RuntimeException {
 
     private Integer wrongServiceTypeId;
 
-    public ServiceTypeException(String message, Integer serviceTypeId) {
-        super(message);
+    public ServiceTypeException(Integer serviceTypeId) {
+        super("Wrong service type");
         this.wrongServiceTypeId = serviceTypeId;
-    }
-
-    public Integer getWrongServiceTypeId() {
-        return wrongServiceTypeId;
-    }
-
-    public void setWrongServiceTypeId(Integer wrongServiceTypeId) {
-        this.wrongServiceTypeId = wrongServiceTypeId;
     }
 }
