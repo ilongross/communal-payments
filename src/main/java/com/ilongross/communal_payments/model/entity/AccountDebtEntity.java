@@ -14,8 +14,6 @@ import java.math.BigDecimal;
 @Table(name = "account_debt", schema = "communal")
 public class AccountDebtEntity {
 
-    //TODO сделать реализацию таблицы с колонками по всем услугам
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_id")

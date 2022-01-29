@@ -170,4 +170,46 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="create-user-auth-id-seq" author="ilongross">
+        <createSequence sequenceName="user_auth_id_seq" schemaName="communal"/>
+    </changeSet>
+    <changeSet id="create-user-auth-table" author="ilongross">
+        <createTable tableName="user_auth" schemaName="communal">
+            <column name="id" type="integer" defaultValueComputed="nextval('communal.user_auth_id_seq')">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="username" type="varchar">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-user-role-id-seq" author="ilongross">
+        <createSequence sequenceName="user_role_id_seq" schemaName="communal"/>
+    </changeSet>
+    <changeSet id="create-user-role-table" author="ilongross">
+        <createTable tableName="user_role" schemaName="communal">
+            <column name="id" type="integer" defaultValueComputed="nextval('communal.user_role_id_seq')">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="varchar">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-user-auth-roles-table" author="ilongross">
+        <createTable tableName="user_auth_roles" schemaName="communal">
+            <column name="user_auth_id" type="integer">
+                <constraints nullable="false" foreignKeyName="user_auth_id_fkey" references="communal.user_auth(id)"/>
+            </column>
+            <column name="user_role_id" type="integer">
+                <constraints nullable="false" foreignKeyName="role_id_fkey" references="communal.user_role(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>

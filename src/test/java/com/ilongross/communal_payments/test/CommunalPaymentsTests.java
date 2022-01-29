@@ -19,6 +19,7 @@ import org.hibernate.query.Query;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -46,6 +47,8 @@ public class CommunalPaymentsTests {
     private PaymentService paymentService;
     @Autowired
     private MeterRepository meterRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Test
     void contextLoads() {
@@ -170,10 +173,15 @@ public class CommunalPaymentsTests {
         var meterEntityList = meterRepository
                 .findByAccountId(accountEntity).stream()
                 .filter(e -> e.getDate().compareTo(datePeriod.getStartDate()) >= 0 &&
-                        e.getDate().compareTo(datePeriod.getEndDate()) <= 0)
-                .collect(Collectors.toList());
+                        e.getDate().compareTo(datePeriod.getEndDate()) <= 0).toList();
         System.out.println(meterEntityList.size());
         meterEntityList.forEach(e-> System.out.println(accountMapperCustom.mapToDto(e)));
+    }
+
+
+    @Test
+    void generatePassword() {
+        log.info("PASS: {}", passwordEncoder.encode("ilongross"));
     }
 
 
