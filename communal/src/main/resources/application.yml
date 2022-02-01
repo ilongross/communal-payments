@@ -1,0 +1,23 @@
+
+#Server
+server:
+  port: 8081
+
+#Spring Boot Hibernate
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/communals
+    username: account
+    password: account
+  jpa:
+    show-sql: true
+  liquibase:
+    change-log: classpath:db/init.xml
+#    change-log: classpath:db/insert_values.xml
+#    change-log: classpath:db/drop_all.xml
+
+#Security
+security:
+  jwt:
+    expiration: 600
+    secret: c2VjcmV0
