@@ -6,6 +6,7 @@ service:
     uri: http://localhost:8081
     path:
       communal-service: /communal/account/all
+      communal-debtors: /communal/account/debtors
     audience: communal-service
 
 #Spring Boot
@@ -21,8 +22,8 @@ spring:
       client:
         registration:
           auth0:
-            client-id: 4p1ydwO65zIWbFm9UUdQmGdMtjK6Iq3o
-            client-secret: FsVV88TWVyt6GX_-P59HR7vqYx60Kyu-uE9jN1bdve3uwOjc4tkyXMnLUMCP-ivT
+            client-id: yDghlyvw2nTb6DTCzYnx6Z66PNNP918t
+            client-secret: frYCqnXPXL5s1-7R3FVpE8ZTdtO0MVMCwPLUCkt4twZnW8QFUHEqXzEFkFMSNr5a
             scope:
               - openid
               - profile

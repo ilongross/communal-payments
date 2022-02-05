@@ -23,19 +23,35 @@ public class CommunalApiServiceImpl implements CommunalApiService {
     private String uri;
     @Value("${service.communal.path.communal-service}")
     private String communalPath;
+    @Value("${service.communal.path.communal-debtors}")
+    private String debtorsPath;
 
 
     private final RestTemplate restTemplate;
     private final TokenApiService tokenApiService;
 
     @Override
-    public String getAllExchange() {
+    public String getAllAccounts() {
         var token = tokenApiService.getToken(clientId, clientSecret, audience);
         var httpHeaders = new HttpHeaders();
         httpHeaders.setBearerAuth(token);
         var requestEntity =
                 RequestEntity
                         .get(uri + communalPath)
+                        .headers(httpHeaders)
+                        .build();
+        var responseEntity = restTemplate.exchange(requestEntity, String.class);
+        return responseEntity.getBody();
+    }
+
+    @Override
+    public String getDebtors() {
+        var token = tokenApiService.getToken(clientId, clientSecret, audience);
+        var httpHeaders = new HttpHeaders();
+        httpHeaders.setBearerAuth(token);
+        var requestEntity =
+                RequestEntity
+                        .get(uri + debtorsPath)
                         .headers(httpHeaders)
                         .build();
         var responseEntity = restTemplate.exchange(requestEntity, String.class);

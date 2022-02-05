@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -25,7 +26,8 @@ public class AccountController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<AccountDto>> getAllAccounts() {
+    public ResponseEntity<List<AccountDto>> getAllAccounts(@RequestHeader Map<String, String> headers) {
+        log.info("Request headers: {}", headers);
         return ResponseEntity
                 .status(HttpStatus.FOUND)
                 .body(accountService.getAllAccounts());

@@ -13,15 +13,17 @@ import org.springframework.web.bind.annotation.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-@RestController
-@RequestMapping("/communal/auth")
+//@RestController
+//@RequestMapping("/communal/auth")
 public class AuthController {
 
     private final UserAuthService userAuthService;
     private final JwtProvider jwtProvider;
     private final AuthenticationManager authenticationManager;
 
-    public AuthController(UserAuthService userAuthService, JwtProvider jwtProvider, AuthenticationManager authenticationManager) {
+    public AuthController(
+            UserAuthService userAuthService,
+            JwtProvider jwtProvider, AuthenticationManager authenticationManager) {
         this.userAuthService = userAuthService;
         this.jwtProvider = jwtProvider;
         this.authenticationManager = authenticationManager;

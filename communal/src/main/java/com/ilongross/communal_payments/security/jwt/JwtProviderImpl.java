@@ -8,14 +8,14 @@ import org.springframework.stereotype.Component;
 import java.sql.Date;
 import java.time.Instant;
 
-@Component
+//@Component
 @Slf4j
 class JwtProviderImpl implements JwtProvider {
 
-    @Value("${security.jwt.expiration}")
+//    @Value("${security.jwt.expiration}")
     private Integer expiration;
 
-    @Value("${security.jwt.secret}")
+//    @Value("${security.jwt.secret}")
     private String secret;
 
     @Override

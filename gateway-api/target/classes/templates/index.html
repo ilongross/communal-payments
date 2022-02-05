@@ -17,6 +17,9 @@
         <div sec:authorize="isAuthenticated()">
             <a th:href="@{/all-communal-accounts}">All accounts</a>
         </div>
+        <div sec:authorize="isAuthenticated()">
+            <a th:href="@{/debtors}">Debtors</a>
+        </div>
 
     </body>
 

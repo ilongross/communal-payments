@@ -22,11 +22,12 @@ class TokenApiServiceImpl implements TokenApiService {
     @Override
     public String getToken(String clientId, String clientSecret, String audience) {
 
-        restTemplate.postForObject(
+        var authResponse = restTemplate.postForObject(
                 tokenUri + "oauth/token",
                 getAuthRequest(clientId, clientSecret, audience),
-                AuthResponse.class);
-        return null;
+                AuthResponse.class
+        );
+        return authResponse.getAccessToken();
     }
 
     private AuthRequest getAuthRequest(String clientId, String clientSecret, String audience) {

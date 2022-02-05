@@ -21,7 +21,10 @@ public class SecurityOAuthConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests().anyRequest().authenticated()
+                .authorizeRequests()
+                .antMatchers("/communal/account/all").hasAuthority("SCOPE_pro")
+                .antMatchers("/communal/account/debtors").hasAnyAuthority("SCOPE_base", "SCOPE_pro")
+                .anyRequest().authenticated()
                 .and().oauth2ResourceServer().jwt();
     }
 
