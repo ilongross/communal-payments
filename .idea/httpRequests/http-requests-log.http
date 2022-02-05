@@ -1,0 +1,281 @@
+GET http://localhost:8081/communal/account/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1NzI3NzB9.OHNkqPcViZJGoNkbGaGnuBWrCFiwfmvJ_NupKXUJd7c
+
+<> 2022-01-31T035012.302.json
+
+###
+
+GET http://localhost:8081/communal/auth/login
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+
+GET http://localhost:8080/communal/account/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1NjQ4NDR9.trBX-hMpMrgpDkwubOj_99_Y9lZJmHYN8xCz9IXB_mU
+
+<> 2022-01-31T013845.302.json
+
+###
+
+GET http://localhost:8080/communal/account/all
+Authorization:
+
+###
+
+GET http://localhost:8080/communal/account/all
+Authorization: Bearer
+
+###
+
+GET http://localhost:8080/communal/account/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1NjQ4NDR9.trBX-hMpMrgpDkwubOj_99_Y9lZJmHYN8xCz9IXB_mU
+
+<> 2022-01-31T013746.302.json
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+
+GET http://localhost:8080/communal/account/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkaW9uaXMiLCJleHAiOjE2NDM1NjQxMzB9.TqUGVZrBt8lW4S8m0XDlY4eK3UDbgFTMb7b2oklhXVo
+
+<> 2022-01-31T012557.302.json
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Basic ZGlvbmlzOjEyMzQ1
+
+###
+
+GET http://localhost:8080/communal/account/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1NjM3ODd9.LAZJjkZ2ayBOl5jgq_ky_MMBar7rwzqUeS6N82q5sVE
+
+<> 2022-01-31T012125.302.json
+
+###
+
+GET http://localhost:8080/communal/account/debtors
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1NjM3ODd9.LAZJjkZ2ayBOl5jgq_ky_MMBar7rwzqUeS6N82q5sVE
+
+<> 2022-01-31T012109.200.json
+
+###
+
+GET http://localhost:8080/communal/account/debtors
+Authorization: Bearer yJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1NjM3ODd9.LAZJjkZ2ayBOl5jgq_ky_MMBar7rwzqUeS6N82q5sVE
+
+###
+
+GET http://localhost:8080/communal/account/debtors
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1NjM3ODd9.LAZJjkZ2ayBOl5jgq_ky_MMBar7rwzqUeS6N82q5sVE
+
+<> 2022-01-31T012038.200.json
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+
+GET http://localhost:8080/communal/account/debtors
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1MzMzODR9.xIq6w9m3SCk-TZMISvzpT9A8NjuP00SA_HSX7ZwT0iA
+
+<> 2022-01-30T165459.200.json
+
+###
+
+GET http://localhost:8080/communal/account/debtors
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1MzMzODR9.xIq6w9m3SCk-TZMISvzpT9A8NjuP00SA_HSX7ZwT0iA
+
+<> 2022-01-30T165417.200.json
+
+###
+
+GET http://localhost:8080/communal/service_type/all
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+<> 2022-01-30T165334.302.json
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+
+GET http://localhost:8080/communal/account/debtors
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+<> 2022-01-30T165241.200.json
+
+###
+
+GET http://localhost:8080/communal/account/debtors
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+<> 2022-01-30T165236.200.json
+
+###
+
+GET http://localhost:8080/communal/account/debtors
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+<> 2022-01-30T165234.200.json
+
+###
+
+GET http://localhost:8080/communal/account/debtors
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+<> 2022-01-30T165224.200.json
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1MzI5MDl9.LvskeRk57RhVStR0KCpgczfYt-CGRW5-kh6KEfB0v3o
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1MzI5MDl9.LvskeRk57RhVStR0KCpgczfYt-CGRW5-kh6KEfB0v3o
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1MzI5MDl9.LvskeRk57RhVStR0KCpgczfYt-CGRW5-kh6KEfB0v3o
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+
+GET http://localhost:8080/communal/account/all
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+<> 2022-01-30T164249.302.json
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1MzIzNjd9.OO5nGB9iHP_DeOOMcBjLa6XVZRApFqP7AysxfmOeAaU
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1MzIzNjd9.OO5nGB9iHP_DeOOMcBjLa6XVZRApFqP7AysxfmOeAaU
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1MzIyODB9.fbkJnahI-bBdNr4WqFync1oNUuO8gG_bFc-DKjn20OQ
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1MzIyODB9.fbkJnahI-bBdNr4WqFync1oNUuO8gG_bFc-DKjn20OQ
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1MzIwOTV9.gwYCiIfYhHd42jKXh7IUbxj6H4taeclOu0vtPc8tSpg
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1MzIwOTV9.gwYCiIfYhHd42jKXh7IUbxj6H4taeclOu0vtPc8tSpg
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1MzA1Mjd9.qHt7Xd9ftmjeWnECrPESJN0tDiXqLE9Orr-pHAZiaxk
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1MzAyMjN9.4ahBU3CiGG2UADnidoVtnQIc7NnbWhAKQfwCWZIVugs
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1MzAyMjN9.4ahBU3CiGG2UADnidoVtnQIc7NnbWhAKQfwCWZIVugs
+
+###
+
+GET http://localhost:8080/communal/account/debtors
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1MzAyMjN9.4ahBU3CiGG2UADnidoVtnQIc7NnbWhAKQfwCWZIVugs
+
+###
+
+GET http://localhost:8080/communal/account/debtors
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1MzAyMjN9.4ahBU3CiGG2UADnidoVtnQIc7NnbWhAKQfwCWZIVugs
+
+###
+
+GET http://localhost:8080/communal/auth/login
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+
+GET http://localhost:8080/communal/account/debtors
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDM1Mjk2NzB9.WTRFfKn8XoiWhHNzg9oR2P78mAp9LgMwzSEUdp-T42g
+
+###
+

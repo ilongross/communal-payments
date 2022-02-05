@@ -1,0 +1,215 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    
+    <changeSet id="init-communal-schema" author="ilongross">
+        <sql>
+            create schema if not exists communal;
+        </sql>
+    </changeSet>
+
+    <changeSet id="create-communal-address-id-seq" author="ilongross">
+        <createSequence sequenceName="address_id_seq" schemaName="communal"/>
+    </changeSet>
+    <changeSet id="create-communal-address-table" author="ilongross">
+        <createTable tableName="address" schemaName="communal">
+            <column name="id" type="integer" defaultValueComputed="nextval('communal.address_id_seq')">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="region" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="street" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="house" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="apartment" type="varchar"/>
+            <column name="square" type="double">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="create-communal-account-id-seq" author="ilongross">
+        <createSequence sequenceName="account_id_seq" schemaName="communal"/>
+    </changeSet>
+    <changeSet id="create-communal-account-table" author="ilongross">
+        <createTable tableName="account" schemaName="communal">
+            <column name="id" type="integer" defaultValueComputed="nextval('communal.account_id_seq')">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastname" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="patronymic" type="varchar"/>
+            <column name="address" type="integer">
+                <constraints nullable="false" foreignKeyName="communal_account_address_fkey" references="communal.address(id)"/>
+            </column>
+            <column name="email" type="varchar">
+                <constraints unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-communal-service-type-id-seq" author="ilongross">
+        <createSequence sequenceName="service_type_id_seq" schemaName="communal"/>
+    </changeSet>
+    <changeSet id="create-communal-service-type-table" author="ilongross">
+        <createTable tableName="service_type" schemaName="communal">
+            <column name="id" type="integer" defaultValueComputed="nextval('communal.service_type_id_seq')">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="service_name" type="varchar">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="tariff" type="double">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-communal-meter-id-seq" author="ilongross">
+        <createSequence sequenceName="meter_id_seq" schemaName="communal"/>
+    </changeSet>
+    <changeSet id="create-communal-meter-table" author="ilongross">
+        <createTable tableName="meter" schemaName="communal">
+            <column name="id" type="integer" defaultValueComputed="nextval('communal.meter_id_seq')">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="account_id" type="integer">
+                <constraints nullable="false" foreignKeyName="communal_meter_account_id_fkey" references="communal.account(id)"/>
+            </column>
+            <column name="service_id" type="integer">
+                <constraints nullable="false" foreignKeyName="communal_meter_service_id_fkey" references="communal.service_type(id)"/>
+            </column>
+            <column name="value" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-communal-payment-id-seq" author="ilongross">
+        <createSequence sequenceName="payment_id_seq" schemaName="communal"/>
+    </changeSet>
+    <changeSet id="create-communal-payment-table" author="ilongross">
+        <createTable tableName="payment" schemaName="communal">
+            <column name="id" type="integer" defaultValueComputed="nextval('communal.payment_id_seq')">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="account_id" type="integer">
+                <constraints nullable="false" foreignKeyName="communal_payment_account_id_fkey" references="communal.account(id)"/>
+            </column>
+            <column name="service_id" type="integer">
+                <constraints nullable="false" foreignKeyName="communal_meter_service_id_fkey" references="communal.service_type(id)"/>
+            </column>
+            <column name="sum" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-communal-account-debt-id-seq" author="ilongross">
+        <createSequence sequenceName="account_debt_id_seq" schemaName="communal"/>
+    </changeSet>
+    <changeSet id="create-communal-account-debt-table" author="ilongross">
+        <createTable tableName="account_debt" schemaName="communal">
+            <column name="account_id" type="integer" defaultValueComputed="nextval('communal.account_debt_id_seq')">
+                <constraints primaryKey="true" unique="true" nullable="false"/>
+            </column>
+            <column name="debt" type="double" defaultValue="0.00">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="create-communal-account-meter-debt-id-seq" author="ilongross">
+        <createSequence sequenceName="account_meter_debt_id_seq" schemaName="communal"/>
+    </changeSet>
+    <changeSet id="create-communal-account-meter-debt-table" author="ilogross">
+        <createTable tableName="account_meter_debt" schemaName="communal">
+            <column name="id" type="integer" defaultValueComputed="nextval('communal.account_meter_debt_id_seq')">
+                <constraints primaryKey="true" unique="true" nullable="false"/>
+            </column>
+            <column name="house_maintenance" type="double" defaultValue="0.00">
+                <constraints nullable="false"/>
+            </column>
+            <column name="current_maintenance" type="double" defaultValue="0.00">
+                <constraints nullable="false"/>
+            </column>
+            <column name="elevator" type="double" defaultValue="0.00">
+                <constraints nullable="false"/>
+            </column>
+            <column name="garbage_remove" type="double" defaultValue="0.00">
+                <constraints nullable="false"/>
+            </column>
+            <column name="electricity" type="double" defaultValue="0.00">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cold_water" type="double" defaultValue="0.00">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hot_water" type="double" defaultValue="0.00">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-user-auth-id-seq" author="ilongross">
+        <createSequence sequenceName="user_auth_id_seq" schemaName="communal"/>
+    </changeSet>
+    <changeSet id="create-user-auth-table" author="ilongross">
+        <createTable tableName="user_auth" schemaName="communal">
+            <column name="id" type="integer" defaultValueComputed="nextval('communal.user_auth_id_seq')">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="username" type="varchar">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-user-role-id-seq" author="ilongross">
+        <createSequence sequenceName="user_role_id_seq" schemaName="communal"/>
+    </changeSet>
+    <changeSet id="create-user-role-table" author="ilongross">
+        <createTable tableName="user_role" schemaName="communal">
+            <column name="id" type="integer" defaultValueComputed="nextval('communal.user_role_id_seq')">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="varchar">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-user-auth-roles-table" author="ilongross">
+        <createTable tableName="user_auth_roles" schemaName="communal">
+            <column name="user_auth_id" type="integer">
+                <constraints nullable="false" foreignKeyName="user_auth_id_fkey" references="communal.user_auth(id)"/>
+            </column>
+            <column name="user_role_id" type="integer">
+                <constraints nullable="false" foreignKeyName="role_id_fkey" references="communal.user_role(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

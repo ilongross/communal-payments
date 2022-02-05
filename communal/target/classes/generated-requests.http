@@ -1,0 +1,64 @@
+
+###
+GET http://localhost:8080/communal/account/all
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+GET http://localhost:8080/communal/account/3
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+GET http://localhost:8080/communal/service_type/all
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+GET http://localhost:8080/communal/service_type/2
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+
+###
+POST http://localhost:8080/communal/service_type/update_tariff
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+Content-Type: application/json
+
+{
+    "id": 2,
+    "tariff": 23.00
+}
+
+###
+POST http://localhost:8080/communal/payment
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+Content-Type: application/json
+
+{
+  "accountId": 1,
+  "serviceId": 5,
+  "sum": 200.50
+}
+
+###
+GET http://localhost:8080/communal/account/debtors
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+#Authorization: Basic a2lzc2tldHM6aWxvbmdyb3Nz
+
+###
+POST http://localhost:8080/communal/auth/create_user
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+#Authorization: Basic YmVlem9zczoxMjM0NQ==
+Content-Type: application/json
+
+{
+  "login": "dionis",
+  "password": "12345"
+}
+
+###
+GET http://localhost:8081/communal/auth/login
+Authorization: Basic aWxvbmdyb3NzOmlsb25ncm9zcw==
+#Authorization: Basic ZGlvbmlzOjEyMzQ1
+
+
+###
+GET http://localhost:8081/communal/account/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpbG9uZ3Jvc3MiLCJleHAiOjE2NDM1NzI3NzB9.OHNkqPcViZJGoNkbGaGnuBWrCFiwfmvJ_NupKXUJd7c
+#Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkaW9uaXMiLCJleHAiOjE2NDM1NjQxMzB9.TqUGVZrBt8lW4S8m0XDlY4eK3UDbgFTMb7b2oklhXVo

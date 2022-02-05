@@ -1,0 +1,32 @@
+server:
+  port: 8082
+
+service:
+  communal:
+    uri: http://localhost:8081
+    path:
+      communal-service: /communal/account/all
+    audience: communal-service
+
+#Spring Boot
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/communals
+    username: account
+    password: account
+  liquibase:
+    change-log: classpath:db/init.xml
+  security:
+    oauth2:
+      client:
+        registration:
+          auth0:
+            client-id: 4p1ydwO65zIWbFm9UUdQmGdMtjK6Iq3o
+            client-secret: FsVV88TWVyt6GX_-P59HR7vqYx60Kyu-uE9jN1bdve3uwOjc4tkyXMnLUMCP-ivT
+            scope:
+              - openid
+              - profile
+              - email
+        provider:
+          auth0:
+            issuer-uri: https://dev-6479d9ck.us.auth0.com/

@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "security.jwt.expiration",
+      "type": "java.lang.String",
+      "description": "Description for security.jwt.expiration."
+    },
+    {
+      "name": "security.jwt.secret",
+      "type": "java.lang.String",
+      "description": "Description for security.jwt.secret."
+    }
+  ] }
