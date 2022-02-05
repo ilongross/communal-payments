@@ -1,6 +1,13 @@
 server:
   port: 8082
 
+service:
+  communal:
+    uri: http://localhost:8081
+    path:
+      communal-service: /communal/account/all
+    audience: communal-service
+
 #Spring Boot
 spring:
   datasource:
