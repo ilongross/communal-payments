@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Meter Send Result</title>
+</head>
+<body>
+<h1>Отчет об отправке показаний</h1>
+<table>
+    <tr>
+        <th>Услуга</th>
+        <td th:text="${meterResult.service}"></td>
+    </tr>
+    <tr>
+        <th>Владелец</th>
+        <td th:text="${meterResult.accountInitials}"></td>
+    </tr>
+    <tr>
+        <th>Значение</th>
+        <td th:text="${meterResult.value}"></td>
+    </tr>
+    <tr>
+        <th>Дата отправки</th>
+        <td th:text="${meterResult.date}"></td>
+    </tr>
+</table>
+</body>
+</html>

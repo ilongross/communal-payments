@@ -1,0 +1,14 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Create Form</title>
+</head>
+<body>
+<h1>Добавить пользователя</h1>
+<form action="#" th:action="@{/communal/auth/create}" th:object="${user}" method="post">
+    <p>Имя пользователя<input  type="text" th:field="*{login}" /></p>
+    <p>Пароль<input  type="text" th:field="*{password}" /></p>
+    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+</form>
+</body>
+</html>

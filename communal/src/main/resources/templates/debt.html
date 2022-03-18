@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Account Debt</title>
+</head>
+<body>
+<h1>Account Debt</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <td th:text="${debt.getAccountId()}"></td>
+    </tr>
+    <tr>
+        <th>Debt</th>
+        <td th:text="${debt.getDebt()}"></td>
+    </tr>
+</table>
+</body>
+</html>

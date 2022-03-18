@@ -1,0 +1,18 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Account Debt</title>
+</head>
+<body>
+<h1>Create Account</h1>
+<form action="#" th:action="@{/communal/account/create}" th:object="${account}" method="post">
+    <p>Ф.И.О.:</p>
+    <p>- имя<input  type="text" th:field="*{name}" /></p>
+    <p>- фамилия<input type="text" th:field="*{lastname}" /></p>
+    <p>- отчество<input type="text" th:field="*{patronymic}" /></p>
+    <p>- email<input type="email" th:field="*{email}" /></p>
+    <p>- адрес<input type="number" th:field="*{address}"></p>
+    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+</form>
+</body>
+</html>

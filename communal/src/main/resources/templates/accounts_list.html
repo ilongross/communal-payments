@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Accounts</title>
+</head>
+<body>
+<h1>Accounts</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Lastname</th>
+        <th>Patronymic</th>
+        <th>Address</th>
+        <th>Email</th>
+    </tr>
+    <tr th:each="acc : ${accountsList}">
+        <td th:text="${acc.getId()}"></td>
+        <td th:text="${acc.getName()}"></td>
+        <td th:text="${acc.getLastname()}"></td>
+        <td th:text="${acc.getPatronymic()}"></td>
+        <td th:text="${acc.getAddress()}"></td>
+        <td th:text="${acc.getEmail()}"></td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Info</title>
+</head>
+<body>
+<h1>Информация пользователя</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <td th:text="${user.getId()}"></td>
+    </tr>
+    <tr>
+        <th>Имя пользователя</th>
+        <td th:text="${user.getLogin()}"></td>
+    </tr>
+    <tr>
+        <th>Роли прав доступа</th>
+        <td th:text="${roles}"></td>
+    </tr>
+</table>
+</body>
+</html>
