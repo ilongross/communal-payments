@@ -5,21 +5,21 @@
 </head>
 <body>
 <div>
-    <form name="f" th:action="@{/perform-login}" method="post">
+    <form name="f" th:action="@{/communal/auth/login}" method="post">
         <fieldset>
-            <legend>Entry</legend>
+            <legend>Вход</legend>
             <div th:if="${param.error}" class="alert alert-error">
-                Wrong login or password.
+                Неверный логин или пароль.
             </div>
             <div th:if="${param.logout}" class="alert alert-success">
-                You have been logged out.
+                Вы вышли из учетной записи.
             </div>
-            <label for="login">Login</label>
+            <label for="login">Имя пользователя</label>
             <input type="text" id="login" name="login"/>
-            <label for="pass">Password</label>
+            <label for="pass">Пароль</label>
             <input type="password" id="pass" name="pass"/>
             <div class="form-actions">
-                <button type="submit" class="btn">Enter</button>
+                <button type="submit" class="btn">Войти</button>
             </div>
         </fieldset>
     </form>

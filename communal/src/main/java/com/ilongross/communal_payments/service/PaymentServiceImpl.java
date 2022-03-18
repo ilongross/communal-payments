@@ -60,14 +60,6 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentResultDto;
     }
 
-    @Override
-    public PaymentDto findById(Integer id) {
-        var entity = paymentRepository.findById(id)
-                .orElseThrow(()-> new IdNotFoundException(id));
-        return paymentMapper.mapToDto(entity);
-    }
-
-
     private AccountMeterDebtEntity getAccountMeterDebtValue(AccountMeterDebtEntity entity, Integer serviceId, BigDecimal addedDebt) {
 
         var debtValue = new BigDecimal("0.00");

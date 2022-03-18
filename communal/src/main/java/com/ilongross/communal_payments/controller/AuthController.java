@@ -29,12 +29,21 @@ public class AuthController {
         var user = userAuthService.create(userAuthDto);
         var roles = String.join(",", user.getRoles());
         model.addAttribute("user", user);
-        model.addAttribute("roles", roles);
         return "user_info";
     }
 
     @GetMapping("/login")
-    public String login(@RequestBody UserAuthDto userAuthDto, Model model) {
+    @ResponseStatus(HttpStatus.OK)
+    public String loginForm(Model model) {
+        model.addAttribute("user", UserAuthDto.builder().build());
+        return "login_form";
+    }
+
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public String login(@ModelAttribute UserAuthDto userAuthDto, Model model) {
+        var user = userAuthService.authenticate(userAuthDto);
+        model.addAttribute("user", user);
         return "user_info";
     }
 

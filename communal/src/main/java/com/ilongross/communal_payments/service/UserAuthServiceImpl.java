@@ -5,9 +5,7 @@ import com.ilongross.communal_payments.exception.UserExistsException;
 import com.ilongross.communal_payments.exception.UserNotFoundException;
 import com.ilongross.communal_payments.model.dto.UserAuthDto;
 import com.ilongross.communal_payments.model.dto.UserInfoDto;
-import com.ilongross.communal_payments.model.entity.RoleEntity;
 import com.ilongross.communal_payments.model.entity.UserAuthEntity;
-import com.ilongross.communal_payments.model.mapper.UserAuthMapper;
 import com.ilongross.communal_payments.repository.RoleAuthRepository;
 import com.ilongross.communal_payments.repository.UserAuthRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +47,18 @@ public class UserAuthServiceImpl implements UserAuthService{
 
     @Override
     public UserInfoDto authenticate(UserAuthDto userAuthDto) {
-        return null;
+        var user = userAuthRepository
+                .findByUsername(userAuthDto.getLogin())
+                .orElseThrow(()-> new UserNotFoundException("Not found."));
+        var roles = new ArrayList<String>();
+        for (var role : user.getRoles()) {
+            roles.add(role.getName());
+        }
+        return UserInfoDto.builder()
+                .id(user.getId())
+                .login(user.getUsername())
+                .roles(roles)
+                .build();
     }
 
     @Override

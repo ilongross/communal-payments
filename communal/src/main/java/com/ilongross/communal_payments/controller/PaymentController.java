@@ -16,20 +16,20 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
+
+    @GetMapping("/send")
+    @ResponseStatus(HttpStatus.OK)
+    public String makePayment(Model model) {
+        model.addAttribute("payment", PaymentDto.builder().build());
+        return "payment_send_form";
+    }
+
     @PostMapping("/send")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public String makePayment(@NonNull @RequestBody PaymentDto dto, Model model) {
+    public String makePayment(@ModelAttribute PaymentDto dto, Model model) {
         var payment = paymentService.makePayment(dto);
         model.addAttribute("payment", payment);
         return "payment_result";
-    }
-
-    @GetMapping("/find/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
-    public String getPaymentById(@PathVariable Integer id, Model model) {
-        var payment = paymentService.findById(id);
-        model.addAttribute("payment", payment);
-        return "payment_info";
     }
 
 }
