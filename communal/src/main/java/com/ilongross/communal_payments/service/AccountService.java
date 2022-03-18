@@ -10,7 +10,7 @@ public interface AccountService {
     AccountDto getAccountById(Integer accountId);
     AccountDebtDto getAccountDebtByAccountId(Integer accountId);
     AccountDto createNewAccount(AccountDto dto);
-    MeterDto sendAccountMeter(MeterDto dto);
+    MeterResultDto sendAccountMeter(MeterDto dto);
     AccountAllDebtDto calculateAllDebt();
     AccountAllDebtDto showDebtInfo();
     List<AccountDebtDto> getAllDebtors();

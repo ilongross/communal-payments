@@ -16,5 +16,6 @@ public class AddressDto {
     private String house;
     private String apartment;
     private BigDecimal square;
+    private String inLine;
 
 }

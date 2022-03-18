@@ -2,43 +2,39 @@ package com.ilongross.communal_payments.controller;
 
 import com.ilongross.communal_payments.model.dto.ServiceTypeDto;
 import com.ilongross.communal_payments.service.ServiceTypeService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
-@RestController
+@Controller
 @RequestMapping("/communal/service_type")
+@RequiredArgsConstructor
 public class ServiceTypeController {
 
     private final ServiceTypeService serviceTypeService;
 
-    public ServiceTypeController(ServiceTypeService serviceTypeService) {
-        this.serviceTypeService = serviceTypeService;
-    }
-
     @GetMapping("/all")
-    public ResponseEntity<List<ServiceTypeDto>> getAllServiceType() {
-       return ResponseEntity
-               .status(HttpStatus.FOUND)
-               .body(serviceTypeService.getAllServiceType());
+    public String getAllServiceType(Model model) {
+        var servicesList = serviceTypeService.getAllServiceType();
+        model.addAttribute("servicesList", servicesList);
+       return "services_list";
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ServiceTypeDto> getServiceTypeById(@PathVariable Integer id) {
-        return ResponseEntity
-                .ok()
-                .body(serviceTypeService.getServiceTypeById(id));
+    public String getServiceTypeById(@PathVariable Integer id, Model model) {
+        var service = serviceTypeService.getServiceTypeById(id);
+        model.addAttribute("service", service);
+        return "service";
     }
 
     @PostMapping("/update_tariff")
-    public ResponseEntity<ServiceTypeDto> updateServiceTariff(@RequestBody ServiceTypeDto dto) {
-        return ResponseEntity
-                .ok()
-                .body(serviceTypeService.updateServiceTariff(dto));
+    public String updateServiceTariff(@RequestBody ServiceTypeDto dto, Model model) {
+        var service = serviceTypeService.updateServiceTariff(dto);
+        model.addAttribute("service", service);
+        return "service";
     }
 
 }

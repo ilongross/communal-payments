@@ -1,5 +1,7 @@
 package com.ilongross.communal_payments.service;
 
+import com.ilongross.communal_payments.exception.AccountIdNotFoundException;
+import com.ilongross.communal_payments.exception.IdNotFoundException;
 import com.ilongross.communal_payments.model.dto.PaymentResultDto;
 import com.ilongross.communal_payments.model.dto.PaymentDto;
 import com.ilongross.communal_payments.model.entity.AccountMeterDebtEntity;
@@ -8,6 +10,7 @@ import com.ilongross.communal_payments.repository.AccountDebtRepository;
 import com.ilongross.communal_payments.repository.AccountMeterDebtRepository;
 import com.ilongross.communal_payments.repository.AccountRepository;
 import com.ilongross.communal_payments.repository.PaymentRepository;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,13 +40,13 @@ public class PaymentServiceImpl implements PaymentService {
     public PaymentResultDto makePayment(PaymentDto dto) {
         var account = accountRepository
                 .findById(dto.getAccountId())
-                .orElseThrow(()-> new RuntimeException("Account not found"));
+                .orElseThrow(()-> new AccountIdNotFoundException(dto.getAccountId()));
         var accountDebtEntity = accountDebtRepository
                 .findById(account.getId())
-                .orElseThrow(()-> new RuntimeException("Account in debt table not found."));
+                .orElseThrow(()-> new IdNotFoundException(account.getId()));
         var accountMeterDebtEntity = accountMeterDebtRepository
                 .findById(dto.getAccountId())
-                .orElseThrow(()-> new RuntimeException("Account in meter debt table not found."));
+                .orElseThrow(()-> new IdNotFoundException(dto.getAccountId()));
         var paymentResultDto = paymentMapper.mapToResultDto(
                 paymentRepository.save(
                         paymentMapper.mapToEntity(dto)));
@@ -56,6 +59,14 @@ public class PaymentServiceImpl implements PaymentService {
         accountDebtRepository.save(accountDebtEntity);
         return paymentResultDto;
     }
+
+    @Override
+    public PaymentDto findById(Integer id) {
+        var entity = paymentRepository.findById(id)
+                .orElseThrow(()-> new IdNotFoundException(id));
+        return paymentMapper.mapToDto(entity);
+    }
+
 
     private AccountMeterDebtEntity getAccountMeterDebtValue(AccountMeterDebtEntity entity, Integer serviceId, BigDecimal addedDebt) {
 

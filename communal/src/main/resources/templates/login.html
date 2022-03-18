@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Entry</title>
+</head>
+<body>
+<div>
+    <form name="f" th:action="@{/perform-login}" method="post">
+        <fieldset>
+            <legend>Entry</legend>
+            <div th:if="${param.error}" class="alert alert-error">
+                Wrong login or password.
+            </div>
+            <div th:if="${param.logout}" class="alert alert-success">
+                You have been logged out.
+            </div>
+            <label for="login">Login</label>
+            <input type="text" id="login" name="login"/>
+            <label for="pass">Password</label>
+            <input type="password" id="pass" name="pass"/>
+            <div class="form-actions">
+                <button type="submit" class="btn">Enter</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+</body>
+</html>

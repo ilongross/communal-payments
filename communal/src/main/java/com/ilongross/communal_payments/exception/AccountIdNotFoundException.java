@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 public class AccountIdNotFoundException extends RuntimeException {
 
     private final Integer accountIdNotFound;

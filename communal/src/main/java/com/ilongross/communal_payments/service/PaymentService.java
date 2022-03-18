@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component;
 public interface PaymentService {
 
     PaymentResultDto makePayment(PaymentDto dto);
-
+    PaymentDto findById(Integer id);
 
 }

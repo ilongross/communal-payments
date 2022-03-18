@@ -3,20 +3,15 @@ package com.ilongross.communal_payments.model.dto;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class MeterDto {
+public class MeterResultDto {
 
-    private Integer id;
-    @NotNull
-    private Integer accountId;
-    @NotNull
-    private Integer serviceId;
-    @NotNull
+    private String accountInitials;
+    private String service;
     private BigDecimal value;
     private LocalDateTime date;
 

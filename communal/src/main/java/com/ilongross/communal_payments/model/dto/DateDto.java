@@ -2,14 +2,13 @@ package com.ilongross.communal_payments.model.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class DatePeriodDto {
+public class DateDto {
 
     private Integer accountId;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private String startDate;
+    private String endDate;
 
 }

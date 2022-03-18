@@ -3,99 +3,58 @@ package com.ilongross.communal_payments.controller;
 
 import com.ilongross.communal_payments.model.dto.*;
 import com.ilongross.communal_payments.service.AccountService;
-import com.sun.istack.NotNull;
+import com.ilongross.communal_payments.service.AddressService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-
-@Slf4j
-@RestController
+@Controller
+@RequiredArgsConstructor
 @RequestMapping("/communal/account")
+@Slf4j
 public class AccountController {
 
-    //TODO Доработать статусы http отетов для всех контроллеров
-
     private final AccountService accountService;
+    private final AddressService addressService;
 
-    public AccountController(AccountService accountService) {
-        this.accountService = accountService;
-    }
-
+    //TODO сделать красивую таблицу
     @GetMapping("/all")
-    public ResponseEntity<List<AccountDto>> getAllAccounts(@RequestHeader Map<String, String> headers) {
-        log.info("Request headers: {}", headers);
-        return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .body(accountService.getAllAccounts());
+    @ResponseStatus(HttpStatus.FOUND)
+    public String getAllAccounts(Model model) {
+        var accountsList = accountService.getAllAccounts();
+        model.addAttribute("accountsList", accountsList);
+        return "accounts_list";
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AccountDto> getAccountById(@PathVariable Integer id) {
-        return ResponseEntity
-                .ok()
-                .body(accountService.getAccountById(id));
+    @ResponseStatus(HttpStatus.FOUND)
+    public String getAccountById(@PathVariable Integer id, Model model) {
+        var account = accountService.getAccountById(id);
+        var address = addressService.getAddressById(account.getAddress());
+        model.addAttribute("account", account);
+        model.addAttribute("address", address);
+        return "account";
     }
 
-    @GetMapping("/debt/{id}")
-    public ResponseEntity<AccountDebtDto> getAccountDebtByAccountId(@PathVariable Integer id) {
-        return ResponseEntity
-                .ok()
-                .body(accountService.getAccountDebtByAccountId(id));
+    @GetMapping("/create")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public String createAccountForm(Model model) {
+        var acc = AccountDto.builder().build();
+        model.addAttribute("account", acc);
+        return "create_account_form";
     }
 
     @PostMapping("/create")
-    public ResponseEntity<AccountDto> createNewAccount(@NotNull @RequestBody AccountDto dto) {
-        return ResponseEntity
-                .ok()
-                .body(accountService.createNewAccount(dto));
+    @ResponseStatus(HttpStatus.CREATED)
+    public String createNewAccount(@ModelAttribute AccountDto acc, Model model) {
+        var account = accountService.createNewAccount(acc);
+        var address = addressService.getAddressById(account.getAddress());
+        model.addAttribute("account", account);
+        model.addAttribute("address", address);
+        return "account";
     }
-
-    @PostMapping("/send_meter")
-    public ResponseEntity<MeterDto> sendAccountMeter(@NotNull @RequestBody MeterDto dto) {
-        return ResponseEntity
-                .ok()
-                .body(accountService.sendAccountMeter(dto));
-    }
-
-    @GetMapping("/calculate_all")
-    public ResponseEntity<AccountAllDebtDto> calculateAllDebt() {
-        return ResponseEntity
-                .ok()
-                .body(accountService.calculateAllDebt());
-    }
-
-    @GetMapping("/debt_info")
-    public ResponseEntity<AccountAllDebtDto> showDebtInfo() {
-        return ResponseEntity
-                .ok()
-                .body(accountService.showDebtInfo());
-    }
-
-    @GetMapping("/meter_debt/{id}")
-    public ResponseEntity<AccountMeterDebtDto> getAccountMeterDebt(@PathVariable Integer id) {
-        return ResponseEntity
-                .ok()
-                .body(accountService.getAccountMeterDebt(id));
-    }
-
-    @GetMapping("/debtors")
-    public ResponseEntity<List<AccountDebtDto>> getAllDebtors() {
-        return ResponseEntity
-                .ok()
-                .body(accountService.getAllDebtors());
-    }
-
-    @GetMapping("/report/{id}")
-    public ResponseEntity<AccountReportDto> getAccountReportByPeriod(@PathVariable Integer id,
-                                                                     @RequestBody DatePeriodDto period) {
-        return ResponseEntity
-                .ok()
-                .body(accountService.getAccountReport(id, period));
-    }
-
 
 }
