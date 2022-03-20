@@ -15,20 +15,3 @@ spring:
     change-log: classpath:db/init.xml
 #    change-log: classpath:db/insert_values.xml
 #    change-log: classpath:db/drop_all.xml
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: https://dev-6479d9ck.us.auth0.com/
-
-#Security
-#security:
-#  jwt:
-#    expiration: 600
-#    secret: c2VjcmV0
-
-
-
-
-auth:
-  audience: communal-service
