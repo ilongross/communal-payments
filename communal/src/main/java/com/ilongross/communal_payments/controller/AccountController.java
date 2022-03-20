@@ -20,6 +20,12 @@ public class AccountController {
     private final AccountService accountService;
     private final AddressService addressService;
 
+    @GetMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+    public String getMenu() {
+        return "account_menu";
+    }
+
     //TODO сделать красивую таблицу
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.FOUND)
@@ -29,14 +35,28 @@ public class AccountController {
         return "accounts_list";
     }
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
-    public String getAccountById(@PathVariable Integer id, Model model) {
-        var account = accountService.getAccountById(id);
-        var address = addressService.getAddressById(account.getAddress());
-        model.addAttribute("account", account);
+    @GetMapping("/addresses")
+    @ResponseStatus(HttpStatus.OK)
+    public String getAllAddresses(Model model) {
+        var addressList = addressService.getAll();
+        model.addAttribute("addressList", addressList);
+        return "addresses_list";
+    }
+
+    @GetMapping("/create_address")
+    @ResponseStatus(HttpStatus.OK)
+    public String createAddressForm(Model model) {
+        var address = AddressDto.builder().build();
         model.addAttribute("address", address);
-        return "account";
+        return "create_address_form";
+    }
+
+    @PostMapping("/create_address")
+    @ResponseStatus(HttpStatus.OK)
+    public String createAddress(@ModelAttribute AddressDto addressDto, Model model) {
+        var address = addressService.create(addressDto);
+        model.addAttribute("address", address);
+        return "address";
     }
 
     @GetMapping("/create")
@@ -55,6 +75,23 @@ public class AccountController {
         model.addAttribute("account", account);
         model.addAttribute("address", address);
         return "account";
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public String getAccountById(@PathVariable Integer id, Model model) {
+        var account = accountService.getAccountById(id);
+        var address = addressService.getAddressById(account.getAddress());
+        model.addAttribute("account", account);
+        model.addAttribute("address", address);
+        return "account";
+    }
+
+    @DeleteMapping("/all")
+    @ResponseStatus(HttpStatus.OK)
+    public String deleteAccount(@ModelAttribute Integer id) {
+        accountService.delete(id);
+        return "accounts_list";
     }
 
 }

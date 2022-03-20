@@ -17,6 +17,12 @@ public class MeterController {
     private final MeterService meterService;
     private final AccountService accountService;
 
+    @GetMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+    public String getMenu() {
+        return "meter_menu";
+    }
+
     @GetMapping("/send")
     @ResponseStatus(HttpStatus.OK)
     public String accountMeterForm(Model model) {

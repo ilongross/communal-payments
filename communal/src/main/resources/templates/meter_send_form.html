@@ -7,9 +7,9 @@
 <h1>Отправить показания</h1>
 <form action="#" th:action="@{/communal/meter/send}" th:object="${meterDto}" method="post">
     <p>ID счета<input  type="number" th:field="*{accountId}" /></p>
-    <p>ID услуги<input  type="number" th:field="*{serviceId}" /></p>
-    <p>значение<input type="text" th:field="*{value}" /></p>
-    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+    <p>Услуга<input  type="number" th:field="*{serviceId}" /></p>
+    <p>Значение<input  type="text" th:field="*{value}" /></p>
+    <p><input type="submit" value="Отправить" /> <input type="reset" value="Сбросить" /></p>
 </form>
 </body>
 </html>

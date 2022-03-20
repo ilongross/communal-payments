@@ -16,4 +16,5 @@ public interface AccountService {
     List<AccountDebtDto> getAllDebtors();
     AccountMeterDebtDto getAccountMeterDebt(Integer accountId);
     AccountReportDto getAccountReport(Integer accountId, DatePeriodDto periodDto);
+    void delete(Integer id);
 }

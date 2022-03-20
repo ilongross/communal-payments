@@ -217,6 +217,11 @@ public class AccountServiceImpl implements AccountService {
                 .build();
     }
 
+    @Override
+    public void delete(Integer id) {
+        accountRepository.deleteById(id);
+    }
+
 
     @Transactional
     AccountAllDebtDto calculateAllAccountsDebt() {

@@ -28,4 +28,14 @@ public class AddressMapper {
                 .build();
     }
 
+    public AddressEntity mapToEntity(AddressDto addressDto) {
+        var entity = new AddressEntity();
+        entity.setRegion(addressDto.getRegion());
+        entity.setCity(addressDto.getCity());
+        entity.setStreet(addressDto.getStreet());
+        entity.setHouse(addressDto.getHouse());
+        entity.setApartment(addressDto.getApartment());
+        entity.setSquare(addressDto.getSquare());
+        return entity;
+    }
 }

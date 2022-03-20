@@ -2,6 +2,7 @@ package com.ilongross.communal_payments.controller;
 
 import com.ilongross.communal_payments.model.dto.DateDto;
 import com.ilongross.communal_payments.model.dto.DatePeriodDto;
+import com.ilongross.communal_payments.model.dto.IntValue;
 import com.ilongross.communal_payments.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,16 +13,24 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 @Controller
-@RequestMapping("communal/info")
+@RequestMapping("/communal/info")
 @RequiredArgsConstructor
 public class InfoController {
 
     private final AccountService accountService;
 
-    @GetMapping("/debt/{id}")
+    @GetMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+    public String getMenu(Model model) {
+        model.addAttribute("id", IntValue.builder().build());
+        model.addAttribute("period", DateDto.builder().build());
+        return "info_menu";
+    }
+
+    @GetMapping("/account_debt")
     @ResponseStatus(HttpStatus.FOUND)
-    public String getAccountDebtByAccountId(@PathVariable Integer id, Model model) {
-        var debt = accountService.getAccountDebtByAccountId(id);
+    public String getAccountDebtByAccountId(@ModelAttribute IntValue id, Model model) {
+        var debt = accountService.getAccountDebtByAccountId(id.getValue());
         model.addAttribute("debt", debt);
         return "debt";
     }
@@ -36,7 +45,7 @@ public class InfoController {
         return "debt_info";
     }
 
-    @GetMapping("/debt_info")
+    @GetMapping("/total_debt")
     @ResponseStatus(HttpStatus.OK)
     public String showDebtInfo(Model model) {
         var debtInfo = accountService.showDebtInfo();

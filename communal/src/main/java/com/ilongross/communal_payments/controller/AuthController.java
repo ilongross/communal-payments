@@ -16,6 +16,12 @@ public class AuthController {
 
     private final UserAuthService userAuthService;
 
+    @GetMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+    public String getMenu() {
+        return "auth_menu";
+    }
+
     @GetMapping("/create")
     @ResponseStatus(HttpStatus.OK)
     public String createForm(Model model) {

@@ -1,0 +1,23 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Services List</title>
+</head>
+<body>
+<h1>Текущие тарифы</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Услуга</th>
+        <th>Тариф</th>
+    </tr>
+    <tr th:each="service : ${servicesList}">
+        <td th:text="${service.getId()}"></td>
+        <td >
+            <a th:href="@{'/communal/service_type/' + ${service.getId()}}" th:text="${service.getServiceName()}" th:method="get"></a>
+        </td>
+        <td th:text="${service.getTariff()}"></td>
+    </tr>
+</table>
+</body>
+</html>

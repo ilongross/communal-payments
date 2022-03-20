@@ -4,7 +4,6 @@ import com.ilongross.communal_payments.model.dto.PaymentDto;
 import com.ilongross.communal_payments.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +15,11 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
+    @GetMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+    public String getMenu() {
+        return "payment_menu";
+    }
 
     @GetMapping("/send")
     @ResponseStatus(HttpStatus.OK)

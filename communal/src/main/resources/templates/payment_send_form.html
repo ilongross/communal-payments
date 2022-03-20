@@ -1,0 +1,15 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Payment Send Form</title>
+</head>
+<body>
+<h1>Оплата по услугам</h1>
+<form action="#" th:action="@{/communal/payment/send}" th:object="${payment}" method="post">
+    <p>ID счета<input  type="number" th:field="*{accountId}" /></p>
+    <p>Услуга<input  type="number" th:field="*{serviceId}" /></p>
+    <p>Сумма<input  type="text" th:field="*{sum}" /></p>
+    <p><input type="submit" value="Оплатить" /> <input type="reset" value="Сбросить" /></p>
+</form>
+</body>
+</html>

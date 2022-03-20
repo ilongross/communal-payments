@@ -8,19 +8,26 @@
 <table>
     <tr>
         <th>ID</th>
-        <th>Name</th>
-        <th>Lastname</th>
-        <th>Patronymic</th>
-        <th>Address</th>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>Отчество</th>
+        <th>Адрес</th>
         <th>Email</th>
+        <th></th>
     </tr>
     <tr th:each="acc : ${accountsList}">
-        <td th:text="${acc.getId()}"></td>
+        <td >
+            <a th:href="@{'/communal/account/' + ${acc.getId()}}" th:text="${acc.getId()}" th:method="get"></a>
+        </td>
         <td th:text="${acc.getName()}"></td>
         <td th:text="${acc.getLastname()}"></td>
         <td th:text="${acc.getPatronymic()}"></td>
         <td th:text="${acc.getAddress()}"></td>
         <td th:text="${acc.getEmail()}"></td>
+        <td >
+<!--            <a th:href="@{'/communal/account/all'}" th:object="${acc.getId()}" th:method="delete">Delete</a>-->
+            <input th:type="button" th:action="@{/communal/account/all}" th:value="удалить" th:object="${acc.getId()}" th:method="delete">
+        </td>
     </tr>
 </table>
 </body>
