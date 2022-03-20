@@ -38,16 +38,17 @@ public class ServiceTypeController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updateServiceTypeForm(@ModelAttribute ServiceTypeDto serviceTypeDto, Model model) {
-        model.addAttribute("service", serviceTypeDto);
+    public String updateServiceTypeForm(@ModelAttribute ServiceTypeDto serviceDto, Model model) {
+        var service = serviceTypeService.getServiceTypeById(serviceDto.getId());
+        model.addAttribute("service", service);
         return "service_type_edit_form";
     }
 
-    @PostMapping("/edit")
-    public String updateServiceTypeResult(@ModelAttribute ServiceTypeDto dto, Model model) {
-        var service = serviceTypeService.updateServiceTariff(dto);
+    @PostMapping("/{id}")
+    public String getServiceTypeById(@ModelAttribute ServiceTypeDto serviceDto, Model model) {
+        var service = serviceTypeService.updateServiceTariff(serviceDto);
         model.addAttribute("service", service);
-        return "services_list";
+        return "service";
     }
 
 }
