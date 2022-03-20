@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Slf4j
 @Component
 public class PaymentMapper {
 
@@ -34,7 +33,6 @@ public class PaymentMapper {
 
     public PaymentEntity mapToEntity(PaymentDto dto) {
         var entity = new PaymentEntity();
-//        log.info("DTO: {}", dto);
         entity.setAccountId(accountRepository.getById(dto.getAccountId()));
         entity.setServiceId(serviceTypeRepository.getById(dto.getServiceId()));
         entity.setSum(new BigDecimal(dto.getSum().toString()));

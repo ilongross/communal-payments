@@ -1,0 +1,31 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Payment Result</title>
+</head>
+<body>
+<h1>Отчет об оплате</h1>
+<table>
+    <tr>
+        <th>Адрес</th>
+        <td th:text="${payment.getAddress()}"></td>
+    </tr>
+    <tr>
+        <th>Владелец</th>
+        <td th:text="${payment.getAccountInitials()}"></td>
+    </tr>
+    <tr>
+        <th>Услуга</th>
+        <td th:text="${payment.getServiceName()}"></td>
+    </tr>
+    <tr>
+        <th>Сумма оплаты</th>
+        <td th:text="${payment.getSum()}"></td>
+    </tr>
+    <tr>
+        <th>Дата оплаты</th>
+        <td th:text="${payment.getDate()}"></td>
+    </tr>
+</table>
+</body>
+</html>

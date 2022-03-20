@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Entry</title>
+</head>
+<body>
+<div>
+    <form name="f" th:action="@{/communal/auth/login}" method="post">
+        <fieldset>
+            <legend>Вход</legend>
+            <div th:if="${param.error}" class="alert alert-error">
+                Неверный логин или пароль.
+            </div>
+            <div th:if="${param.logout}" class="alert alert-success">
+                Вы вышли из учетной записи.
+            </div>
+            <label for="login">Имя пользователя</label>
+            <input type="text" id="login" name="login"/>
+            <label for="pass">Пароль</label>
+            <input type="password" id="pass" name="pass"/>
+            <div class="form-actions">
+                <button type="submit" class="btn">Войти</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+</body>
+</html>

@@ -4,10 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 public class ServiceTypeException extends RuntimeException {
 
-    private Integer wrongServiceTypeId;
+    private final Integer wrongServiceTypeId;
 
     public ServiceTypeException(Integer serviceTypeId) {
         super("Wrong service type");

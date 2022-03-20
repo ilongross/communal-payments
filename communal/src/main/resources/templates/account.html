@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Account</title>
+</head>
+<body>
+<h1>Информация пользователя</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <td th:text="${account.getId()}"></td>
+    </tr>
+    <tr>
+        <th>Имя</th>
+        <td th:text="${account.getName()}"></td>
+    </tr>
+    <tr>
+        <th>Фамилия</th>
+        <td th:text="${account.getLastname()}"></td>
+    </tr>
+    <tr>
+        <th>Отчество</th>
+        <td th:text="${account.getPatronymic()}"></td>
+    </tr>
+    <tr>
+        <th>Адрес</th>
+        <td th:text="${address.getInLine()}"></td>
+    </tr>
+    <tr>
+        <th>Email</th>
+        <td th:text="${account.getEmail()}"></td>
+    </tr>
+</table>
+</body>
+</html>

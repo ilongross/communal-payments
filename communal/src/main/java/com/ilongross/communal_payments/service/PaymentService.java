@@ -9,5 +9,4 @@ public interface PaymentService {
 
     PaymentResultDto makePayment(PaymentDto dto);
 
-
 }

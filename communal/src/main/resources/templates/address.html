@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Address</title>
+</head>
+<body>
+<h1>Адрес</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <td th:text="${address.getId()}"></td>
+    </tr>
+    <tr>
+        <th>Регион</th>
+        <td th:text="${address.getRegion()}"></td>
+    </tr>
+    <tr>
+        <th>Населенный пункт</th>
+        <td th:text="${address.getCity()}"></td>
+    </tr>
+    <tr>
+        <th>Улица</th>
+        <td th:text="${address.getStreet()}"></td>
+    </tr>
+    <tr>
+        <th>Дом</th>
+        <td th:text="${address.getHouse()}"></td>
+    </tr>
+    <tr>
+        <th>Квартира</th>
+        <td th:text="${address.getApartment()}"></td>
+    </tr>
+    <tr>
+        <th>Площадь</th>
+        <td th:text="${address.getSquare()}"></td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,32 +1,82 @@
 package com.ilongross.communal_payments.service;
 
+import com.ilongross.communal_payments.exception.IdNotFoundException;
+import com.ilongross.communal_payments.exception.UserExistsException;
+import com.ilongross.communal_payments.exception.UserNotFoundException;
 import com.ilongross.communal_payments.model.dto.UserAuthDto;
+import com.ilongross.communal_payments.model.dto.UserInfoDto;
 import com.ilongross.communal_payments.model.entity.UserAuthEntity;
+import com.ilongross.communal_payments.repository.RoleAuthRepository;
 import com.ilongross.communal_payments.repository.UserAuthRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
-//@Component
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Component
 @RequiredArgsConstructor
-public class UserAuthServiceImpl implements UserAuthService {
+public class UserAuthServiceImpl implements UserAuthService{
 
     private final UserAuthRepository userAuthRepository;
-    private final PasswordEncoder passwordEncoder;
-
+    private final RoleAuthRepository roleAuthRepository;
 
     @Override
-    @Transactional
-    @PreAuthorize("hasAuthority(admin)")
-    public String create(UserAuthDto userAuthDto) {
-
-        //TODO реализовать обработку исключения при неуспешной аутентификации и авторизации
-        //TODO реализовать @PreAuthorize аннотации
-        var userAuthEntity = new UserAuthEntity();
-        userAuthEntity.setUsername(userAuthDto.getLogin());
-        userAuthEntity.setPassword(passwordEncoder.encode(userAuthDto.getPassword()));
-        return userAuthRepository.save(userAuthEntity).getUsername();
+    public UserInfoDto create(UserAuthDto userAuthDto) {
+        var isPresent = userAuthRepository
+                .findByUsername(userAuthDto.getLogin()).isPresent();
+        var userInfo = UserInfoDto.builder();
+        if(!isPresent) {
+            var entity = new UserAuthEntity();
+            var role = roleAuthRepository
+                    .findByName("user").orElseThrow(()-> new IdNotFoundException(null));
+            entity.setUsername(userAuthDto.getLogin());
+            entity.setPassword(userAuthDto.getPassword());
+            entity.setRoles(List.of(role));
+            var entityCreated = userAuthRepository.save(entity);
+            userInfo
+                    .id(entityCreated.getId())
+                    .login(entityCreated.getUsername())
+                    .roles(List.of(role.getName()));
+        } else {
+            throw new UserExistsException("User already exists.");
+        }
+        return userInfo.build();
     }
+
+    @Override
+    public UserInfoDto authenticate(UserAuthDto userAuthDto) {
+        var user = userAuthRepository
+                .findByUsername(userAuthDto.getLogin())
+                .orElseThrow(()-> new UserNotFoundException("Not found."));
+        var roles = new ArrayList<String>();
+        for (var role : user.getRoles()) {
+            roles.add(role.getName());
+        }
+        return UserInfoDto.builder()
+                .id(user.getId())
+                .login(user.getUsername())
+                .roles(roles)
+                .build();
+    }
+
+    @Override
+    public List<UserInfoDto> getAll() {
+        var entities = userAuthRepository.findAll();
+        var userInfoList = new ArrayList<UserInfoDto>();
+        for (var e : entities) {
+            var roles = new ArrayList<String>();
+            for (var role : e.getRoles()) {
+                roles.add(role.getName());
+            }
+            userInfoList.add(UserInfoDto.builder()
+                    .id(e.getId()).login(e.getUsername()).roles(roles)
+                    .build());
+        }
+        return userInfoList;
+    }
+
+
+
 }

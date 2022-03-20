@@ -5,20 +5,15 @@ import com.ilongross.communal_payments.CommunalPaymentsApplication;
 import com.ilongross.communal_payments.model.dto.*;
 import com.ilongross.communal_payments.model.entity.AccountEntity;
 import com.ilongross.communal_payments.model.entity.AddressEntity;
-import com.ilongross.communal_payments.model.mapper.AccountMapper;
 import com.ilongross.communal_payments.model.mapper.AccountMapperCustom;
 import com.ilongross.communal_payments.model.mapper.ServiceTypeMapper;
-import com.ilongross.communal_payments.repository.AccountRepository;
-import com.ilongross.communal_payments.repository.AddressRepository;
-import com.ilongross.communal_payments.repository.MeterRepository;
-import com.ilongross.communal_payments.repository.ServiceTypeRepository;
+import com.ilongross.communal_payments.repository.*;
 import com.ilongross.communal_payments.service.PaymentService;
-import com.ilongross.communal_payments.service.ServiceTypeService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -33,21 +28,17 @@ public class CommunalPaymentsTests {
     @Autowired
     private AddressRepository addressRepository;
     @Autowired
-    private AccountMapper accountMapper;
-    @Autowired
     private AccountMapperCustom accountMapperCustom;
     @Autowired
     private ServiceTypeRepository serviceTypeRepository;
     @Autowired
     private ServiceTypeMapper serviceTypeMapper;
     @Autowired
-    private ServiceTypeService serviceTypeService;
-    @Autowired
     private PaymentService paymentService;
     @Autowired
     private MeterRepository meterRepository;
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private UserAuthRepository userAuthRepository;
 
     @Test
     void contextLoads() {
@@ -80,6 +71,7 @@ public class CommunalPaymentsTests {
     }
 
     @Test
+    @Transactional
     void insertEntities() {
         var addressEntity = new AddressEntity();
         addressEntity.setRegion("Иркутская область");
@@ -89,17 +81,7 @@ public class CommunalPaymentsTests {
         addressEntity.setApartment("10");
         addressEntity.setSquare(new BigDecimal("46.3"));
         addressRepository.save(addressEntity);
-
-//        var accountEntity = new AccountEntity();
-//        accountEntity.setId(2);
-//        accountEntity.setName("Yakovleva");
-//        accountEntity.setLastname("Ekaterina");
-//        accountEntity.setPatronymic("Aleksandrovna");
-//        accountEntity.setAddress(addressRepository.getById(4));
-//        accountEntity.setEmail("kisskat@yandex.ru");
-//        accountRepository.save(accountEntity);
     }
-
 
     @Test
     void mappers() {
@@ -121,12 +103,7 @@ public class CommunalPaymentsTests {
     }
 
     @Test
-    void saveEntity() {
-//        var newServiceType = ServiceTypeDto.builder()
-//                .serviceName();
-    }
-
-    @Test
+    @Transactional
     void testPaymentMapping() {
         var paymentDto = PaymentDto.builder()
                 .id(1)
@@ -135,27 +112,6 @@ public class CommunalPaymentsTests {
                 .sum(new BigDecimal("1000.02")).build();
         var result = paymentService.makePayment(paymentDto);
         log.info("RESULT DTO: {}", result);
-    }
-
-    @Test
-    void hqlQueries() {
-//
-//        var session = HibernateSessionFactory.getSessionFactory().openSession();
-//        var tx = session.beginTransaction();
-//        var query = session.createQuery("update ContactEntity set firstName = :nameParam, lastName = :lastNameParam" +
-//                ", birthDate = :birthDateParam"+
-//                " where firstName = :nameCode");
-//        query.setParameter("nameCode", "Nick");
-//        query.setParameter("nameParam", "NickChangedName1");
-//        query.setParameter("lastNameParam", "LastNameChanged1" );
-//        query.setParameter("birthDateParam", new Date());
-//        int result = query.executeUpdate();
-//        tx.commit();
-//        session.close();
-//        String hql = "FROM User where name = :paramName";
-//        Query query = session.createQuery(hql);
-//        query.setParameter("paramName", "Alex");
-//        List<User> users = query.list();
     }
 
     @Test
@@ -177,11 +133,12 @@ public class CommunalPaymentsTests {
         meterEntityList.forEach(e-> System.out.println(accountMapperCustom.mapToDto(e)));
     }
 
-
     @Test
-    void generatePassword() {
-        log.info("PASS: {}", passwordEncoder.encode("ilongross"));
+    void getUserAuthEntity() {
+        var entities = userAuthRepository.findAll();
+        for (var e : entities) {
+            log.info("USER: {}; ROLES: {}", e.getUsername(), e.getRoles());
+        }
     }
-
 
 }

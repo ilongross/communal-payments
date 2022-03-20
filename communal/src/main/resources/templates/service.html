@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Service</title>
+</head>
+<body>
+<h1>Услуга</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <td th:text="${service.getId()}"></td>
+    </tr>
+    <tr>
+        <th>Название</th>
+        <td th:text="${service.getServiceName()}"></td>
+    </tr>
+    <tr>
+        <th>Текущий тариф</th>
+        <td th:text="${service.getTariff()}"></td>
+    </tr>
+</table>
+</br>
+<form action="#" th:action="@{'/communal/service_type/edit/' + ${service.getId()}}" th:object="${service}" method="post">
+    <p><input type="submit" value="Изменить" /></p>
+</form>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Account Report By Date</title>
+</head>
+<body>
+<h1>Отчет по счету за период</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <td th:text="${periodDto.getAccountId()}"></td>
+    </tr>
+    <tr>
+        <th>Начало периода</th>
+        <td th:text="${periodDto.getStartDate()}"></td>
+    </tr>
+    <tr>
+        <th>Конец</th>
+        <td th:text="${periodDto.getEndDate()}"></td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <th>Услуга</th>
+        <th>Начислено</th>
+        <th>Оплачено</th>
+        <th>Текущая задолженность</th>
+    </tr>
+    <tr th:each="meter : ${meterReportList}">
+        <td th:text="${meter.getServiceName()}"></td>
+        <td th:text="${meter.getAddedSum()}"></td>
+        <td th:text="${meter.getPaidSum()}"></td>
+        <td th:text="${meter.getCurrentDebt()}"></td>
+    </tr>
+</table>
+</body>
+</html>

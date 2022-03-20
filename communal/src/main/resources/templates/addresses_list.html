@@ -1,0 +1,15 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Addresses</title>
+</head>
+<body>
+<h1>Список адресов</h1>
+<table>
+    <tr th:each="address : ${addressList}">
+        <td th:text="${address.getId()}"></td>
+        <td th:text="${address.getInLine()}"></td>
+    </tr>
+</table>
+</body>
+</html>

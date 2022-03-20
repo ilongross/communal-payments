@@ -8,6 +8,7 @@ import com.ilongross.communal_payments.model.entity.AccountMeterDebtEntity;
 import com.ilongross.communal_payments.model.mapper.AccountMapperCustom;
 import com.ilongross.communal_payments.model.mapper.PaymentMapper;
 import com.ilongross.communal_payments.repository.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +20,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Component
+@Slf4j
+@RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
@@ -31,17 +33,6 @@ public class AccountServiceImpl implements AccountService {
     private final AccountMeterDebtRepository accountMeterDebtRepository;
     private final PaymentRepository paymentRepository;
     private final PaymentMapper paymentMapper;
-
-    public AccountServiceImpl(AccountRepository accountRepository, AccountMapperCustom accountMapperCustom, AccountDebtRepository accountDebtRepository, MeterRepository meterRepository, ServiceTypeRepository serviceTypeRepository, AccountMeterDebtRepository accountMeterDebtRepository, PaymentRepository paymentRepository, PaymentMapper paymentMapper) {
-        this.accountRepository = accountRepository;
-        this.accountMapperCustom = accountMapperCustom;
-        this.accountDebtRepository = accountDebtRepository;
-        this.meterRepository = meterRepository;
-        this.serviceTypeRepository = serviceTypeRepository;
-        this.accountMeterDebtRepository = accountMeterDebtRepository;
-        this.paymentRepository = paymentRepository;
-        this.paymentMapper = paymentMapper;
-    }
 
     @Override
     public List<AccountDto> getAllAccounts() {
@@ -88,11 +79,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public MeterDto sendAccountMeter(MeterDto dto) {
+    public MeterResultDto sendAccountMeter(MeterDto dto) {
         if(dto.getServiceId() < 5 || dto.getServiceId() > 7) {
             throw new ServiceTypeException(dto.getServiceId());
         }
-
         dto.setDate(LocalDateTime.now());
         var accountEntity = accountRepository
                 .findById(dto.getAccountId())
@@ -125,7 +115,7 @@ public class AccountServiceImpl implements AccountService {
                 .save(accountMapperCustom.mapToEntity(dto));
         accountDebtRepository.save(accountDebtEntity);
         accountMeterDebtRepository.save(accountMeterDebtEntity);
-        return accountMapperCustom.mapToDto(entity);
+        return accountMapperCustom.mapToMeterResultDto(entity);
     }
 
     @Override
@@ -189,15 +179,8 @@ public class AccountServiceImpl implements AccountService {
         var serviceIdSet = new HashSet<Integer>();
         serviceIdSet.addAll(new ArrayList<>(accountMeterDtoByPeriodMap.keySet()));
         serviceIdSet.addAll(new ArrayList<>(accountPaymentDtoByPeriodMap.keySet()));
-        log.info("SET: {}", serviceIdSet);
 
-        log.info("METER size: {}", accountMeterDtoByPeriodMap.size());
-        log.info("PAYMENT size: {}", accountPaymentDtoByPeriodMap.size());
         var meterReportDtoList = new ArrayList<MeterReportDto>();
-
-        log.info("METER MAP: {}", accountMeterDtoByPeriodMap);
-        log.info("PAYMENT MAP: {}", accountPaymentDtoByPeriodMap);
-
         for (var serviceId : serviceIdSet) {
             var meterReportDto = MeterReportDto.builder().build();
             var serviceEntity = serviceTypeRepository
@@ -234,9 +217,14 @@ public class AccountServiceImpl implements AccountService {
                 .build();
     }
 
+    @Override
+    public void delete(Integer id) {
+        accountRepository.deleteById(id);
+    }
+
 
     @Transactional
-    private AccountAllDebtDto calculateAllAccountsDebt() {
+    AccountAllDebtDto calculateAllAccountsDebt() {
         var debtorsCounter = 0;
         var totalDebt = new BigDecimal("0.00");
         var accountDebtEntities = accountDebtRepository.findAll();
@@ -253,7 +241,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Transactional
-    private void calculateAccountMeterDebt(AccountMeterDebtEntity meterDebtEntity) {
+    void calculateAccountMeterDebt(AccountMeterDebtEntity meterDebtEntity) {
         var square = accountRepository
                 .findById(meterDebtEntity.getId())
                 .orElseThrow(()-> new AccountIdNotFoundException(meterDebtEntity.getId()))

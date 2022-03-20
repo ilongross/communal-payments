@@ -1,59 +1,64 @@
 package com.ilongross.communal_payments.controller;
 
 import com.ilongross.communal_payments.model.dto.UserAuthDto;
-import com.ilongross.communal_payments.security.jwt.JwtProvider;
 import com.ilongross.communal_payments.service.UserAuthService;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 
-//@RestController
-//@RequestMapping("/communal/auth")
+@Controller
+@RequestMapping("/communal/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
     private final UserAuthService userAuthService;
-    private final JwtProvider jwtProvider;
-    private final AuthenticationManager authenticationManager;
 
-    public AuthController(
-            UserAuthService userAuthService,
-            JwtProvider jwtProvider, AuthenticationManager authenticationManager) {
-        this.userAuthService = userAuthService;
-        this.jwtProvider = jwtProvider;
-        this.authenticationManager = authenticationManager;
+    @GetMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+    public String getMenu() {
+        return "auth_menu";
     }
 
-
-    @PostMapping("/create_user")
-    public String createUserAuth(@RequestBody UserAuthDto userAuthDto) {
-        return userAuthService.create(userAuthDto);
+    @GetMapping("/create")
+    @ResponseStatus(HttpStatus.OK)
+    public String createForm(Model model) {
+        model.addAttribute("user", UserAuthDto.builder().build());
+        return "user_create_form";
     }
 
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String create(@ModelAttribute UserAuthDto userAuthDto, Model model) {
+        var user = userAuthService.create(userAuthDto);
+        var roles = String.join(",", user.getRoles());
+        model.addAttribute("user", user);
+        return "user_info";
+    }
 
     @GetMapping("/login")
-    public ResponseEntity<Void> login(@RequestHeader(HttpHeaders.AUTHORIZATION) String logpass) {
+    @ResponseStatus(HttpStatus.OK)
+    public String loginForm(Model model) {
+        model.addAttribute("user", UserAuthDto.builder().build());
+        return "login_form";
+    }
 
-        var logpassArray = new String(
-                Base64.getUrlDecoder().decode(logpass.substring(6)), StandardCharsets.UTF_8)
-                .split(":");
-        var login = logpassArray[0];
-        var password = logpassArray[1];
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public String login(@ModelAttribute UserAuthDto userAuthDto, Model model) {
+        var user = userAuthService.authenticate(userAuthDto);
+        model.addAttribute("user", user);
+        return "user_info";
+    }
 
-        var authenticate = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(login, password));
-        SecurityContextHolder.getContext().setAuthentication(authenticate);
-
-        var jwt = jwtProvider.generateJwt(login);
-        return ResponseEntity
-                .ok()
-                .header("access_token", jwt)
-                .build();
+    @GetMapping("/users")
+    @ResponseStatus(HttpStatus.OK)
+    public String users(Model model) {
+        var users = userAuthService.getAll();
+        model.addAttribute("users", users);
+        return "users_list";
     }
 
 }

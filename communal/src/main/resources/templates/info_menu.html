@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Info Menu</title>
+</head>
+<body>
+<h1>Информация. Расчет.</h1>
+<a th:href="@{/communal/info/total_debt}">Общая задолженность</a>
+<br/>
+<form action="#" th:action="@{/communal/info/account_debt}" th:object="${id}" method="get">
+    <p>Задолженность по счету<input  type="number" th:field="*{value}" /></p>
+    <p><input type="submit" value="Найти" /></p>
+</form>
+<br/>
+<br/>
+<form action="#" th:action="@{/communal/info/report}" th:object="${period}" method="post">
+    <p>Отчет по счету за период:</p>
+    <p> - ID<input  type="number" th:field="*{accountId}" /></p>
+    <p> - начало<input  type="datetime-local" th:field="*{startDate}" /></p>
+    <p> - конец<input  type="datetime-local" th:field="*{endDate}" /></p>
+    <p><input type="submit" value="Найти" /></p>
+</form>
+<br/>
+<br/>
+<a th:href="@{/communal/info/calculate_all}" >Провести начисления по счетам</a>
+<br/>
+</body>
+</html>
